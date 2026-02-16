@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FirstPage"
+    android:orientation="vertical"
+    android:background="#AE0303">
+    
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#fdf7f4"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="স্বেচ্ছায় করি রক্তদান "
+        android:textStyle="bold"
+        android:textColor="#AE0303"
+        android:textSize="30dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="30dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="হাসবে রোগী- বাঁচবে প্রাণ "
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:layout_marginLeft="30dp"
+        android:textColor="@color/black"
+        />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="480dp"
+        android:src="@drawable/theme"
+        />
+    <Button
+        android:id="@+id/login_first"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:backgroundTint="#AE0303"
+        android:layout_margin="30dp"
+        android:textColor="@android:color/white"
+        />
+</LinearLayout>
+</LinearLayout>

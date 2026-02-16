@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Blood Bank T</string>
+    <string name="drawer_close">Close Drawer</string>
+    <string name="drawer_open">Open Drawer</string>
+    <string name="google_login_client_id">159272308307-90nfv2v70ttukiacssgqhlphnvtbvn6n.apps.googleusercontent.com</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

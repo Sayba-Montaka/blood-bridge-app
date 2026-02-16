@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Tips"
+    android:orientation="vertical"
+    android:background="#AE0303"
+    >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/tips2"
+        />
+    <ImageView
+        android:id="@+id/tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/backarrow"
+        android:layout_margin="20dp"
+        />
+</RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="20dp"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="রক্তদান: সম্পূর্ণ নির্দেশিকা"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:textColor="@color/black"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="১. কারা রক্তদান করতে পারেন?"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text=" \nমৌলিক প্রয়োজনীয়তা:\n
+        বয়স: ১৮-৬৫ বছর (কিছু দেশে পিতামাতার সম্মতিতে ১৬-১৭ বছর)\n
+        ওজন: সর্বনিম্ন ৫০ কেজি (১১০ পাউন্ড)\n
+        স্বাস্থ্য: সুস্থ থাকতে হবে, অসুস্থ বা সংক্রামিত হতে হবে না\n
+        হিমোগ্লোবিন: ≥১২.৫ গ্রাম/ডেসিলিটার (মহিলা), ≥১৩.০ গ্রাম/ডেসিলিটার (পুরুষ)\n
+        নাড়ি: ৫০-১০০ বিট/মিনিট\n
+        রক্তচাপ: সিস্টোলিক ৯০-১৮০, ডায়াস্টোলিক ৫০-১০০ মিমিএইচজি\n\n
+        সাম্প্রতিক প্রয়োজনীয়তা:\n
+        ২ সপ্তাহ ধরে জ্বর নেই\n
+        গর্ভবতী নন বা বুকের দুধ খাওয়াচ্ছেন না (প্রসবের পর ৬-১২ মাস অপেক্ষা করুন)\n
+        শেষ দানের পর থেকে কমপক্ষে ৩ মাস\n
+        গত ৬ মাসে কোনও বড় অস্ত্রোপচার হয়নি\n"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" ২. কারা রক্তদান করতে পারবেন না?"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="\n সাময়িক বিধিনিষেধ (কিছু সময়ের জন্য দান করা যাবে না):\n
+        সাম্প্রতিক সংক্রমণ: ঠান্ডা, ফ্লু, জ্বর (২ সপ্তাহ অপেক্ষা করুন)\n
+        ট্যাটু/ছিদ্র: ৩-১২ মাস (দেশের উপর নির্ভর করে)\n
+        দন্ত প্রক্রিয়া: ২৪ ঘন্টা থেকে ১ মাস\n
+        ম্যালেরিয়া আক্রান্ত এলাকায় ভ্রমণ: ১-৩ বছরের বিধিনিষেধ\n
+        কোভিড-১৯: আরোগ্য লাভের ১৪ দিন পর\n
+        গর্ভাবস্থা/স্তন্যপান: প্রসবের ৬-১২ মাস পর\n
+        কম হিমোগ্লোবিন: মাত্রা উন্নত হলে দান করা যেতে পারে\n\n
+        স্থায়ী বিধিনিষেধ (কখনই দান করা যাবে না):\n
+        এইচআইভি/এইডস পজিটিভ\n
+        হেপাটাইটিস বি বা সি পজিটিভ\n
+        ক্যান্সার (বেশিরভাগ ধরণের)\n
+        হৃদপিণ্ড/ফুসফুস/কিডনি রোগ\n
+        রক্তপাতজনিত ব্যাধি (হিমোফিলিয়া)\n
+        IV মাদক ব্যবহারকারী\n
+        কিছু স্নায়বিক রোগ\n"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="৩. সুবিধা"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="রক্তদান অসংখ্য গুরুত্বপূর্ণ সুবিধা প্রদান করে যা দাতা, গ্রহীতা এবং সমগ্র সমাজকে উপকৃত করে। দাতার জন্য, এটি একটি মূল্যবান, বিনামূল্যে মিনি-হেলথ স্ক্রিনিং প্রদান করে, গুরুত্বপূর্ণ লক্ষণগুলি পরীক্ষা করে এবং বিভিন্ন রোগের জন্য পরীক্ষা করে, যা সম্ভাব্য স্বাস্থ্য সমস্যাগুলির প্রাথমিক সনাক্তকরণের দিকে পরিচালিত করতে পারে। নিয়মিত দান রক্তের সান্দ্রতা এবং অতিরিক্ত আয়রন সঞ্চয় হ্রাস করে উন্নত হৃদরোগের স্বাস্থ্যের সাথে যুক্ত, যার ফলে হৃদরোগের ঝুঁকি হ্রাস পায়। এটি শরীরকে তাজা রক্তকণিকা পুনরুজ্জীবিত করতেও উদ্দীপিত করে এবং ক্যালোরি পোড়াতে সহায়তা করতে পারে। শারীরিক সুবিধার পাশাপাশি, দাতারা সহায়কের উচ্চ থেকে একটি শক্তিশালী মানসিক উন্নতি অনুভব করেন - তাদের কাজ সম্পর্কে জানার ফলে তৃপ্তির গভীর অনুভূতি এবং হ্রাসপ্রাপ্ত চাপ যা সরাসরি তিনটি জীবন বাঁচায়। সমাজের জন্য, প্রতিটি দান জরুরি অবস্থা, অস্ত্রোপচার, ক্যান্সারের চিকিৎসা এবং মাতৃত্বকালীন যত্নের জন্য প্রয়োজনীয় গুরুত্বপূর্ণ রক্ত ​​সরবরাহকে শক্তিশালী করে, জনস্বাস্থ্যের স্থিতিস্থাপকতা বৃদ্ধি করে এবং পরোপকার এবং সম্প্রদায়ের সহায়তার সংস্কৃতি গড়ে তোলে।\n\n"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="৪.অসুবিধা/ঝুঁকি"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text=" \n\n দাতার জন্য:\n
+        অস্থায়ী দুর্বলতা: কয়েক ঘন্টার ক্লান্তি\n
+        আয়রনের ঘাটতি: যদি সঠিক খাদ্যাভ্যাস ছাড়া ঘন ঘন রক্তদান করা হয়\n
+        আয়রনের ঘাটতি/ব্যথা: সুই দেওয়ার স্থানে\n
+        বিরল প্রতিক্রিয়া: অজ্ঞান হয়ে যাওয়া, বমি বমি ভাব (১-২% ক্ষেত্রে)\n
+        সংক্রমণের ঝুঁকি: জীবাণুমুক্ত সরঞ্জাম ব্যবহারে খুবই কম\n"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="৫. রক্তদানের পর কী খাবেন"
+                android:textColor="@color/black"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="\n\nঅবিলম্বে (প্রথম ৩০ মিনিট):\n
+        পান: ৫০০ মিলি জল বা রস\n
+        খাও: কুকিজ, ফল, দান কেন্দ্রে সরবরাহ করা হালকা খাবার\n
+        বিশ্রাম: ১৫-২০ মিনিট বসে থাকুন\n
+প্রথম ২৪ ঘন্টা:\n
+আয়রন সমৃদ্ধ খাবার: লাল মাংস, পালং শাক, মসুর ডাল, মটরশুটি\n
+        ভিটামিন সি জাতীয় খাবার: কমলালেবু, লেবু, টমেটো (আয়রন শোষণে সহায়তা করে)\n
+        তরল: জল, রস, নারকেল জল (২-৩ লিটার)\n
+        প্রোটিন: ডিম, মুরগি, মাছ, দুগ্ধজাত দ্রব্য\n
+এড়িয়ে চলুন:\n
+        অ্যালকোহল (২৪ ঘন্টার জন্য)\n
+        ক্যাফিন (কারণ হতে পারে (ডিহাইড্রেশন)\n
+        ভারী, চর্বিযুক্ত খাবার\n
+        কঠোর ব্যায়াম\n"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="৬. রক্তের সামঞ্জস্যতা চার্ট"
+                android:textColor="@color/black"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="\n\nকোন রক্ত কাকে দেওয়া যেতে পারে:\n
+O- → দান করতে পারেন: সকলকে (সর্বজনীন দাতা)\n
+O+ → দান করতে পারেন: O+, A+, B+, AB+\n
+A- → দান করতে পারেন: A-, A+, AB-, AB+\n
+B- → দান করতে পারেন: B-, B+, AB-, AB+\n
+AB- → দান করতে পারেন: AB-, AB+\n
+A+ → দান করতে পারেন: A+, AB+\n
+B+ → দান করতে পারেন: B+, AB+\n
+AB+ → দান করতে পারেন: B+, AB+\n
+AB+ → দান করতে পারেন: AB+ শুধুমাত্র (সর্বজনীন গ্রহীতা)\n\n
+
+কোন রক্ত কার কাছ থেকে নেওয়া যেতে পারে:\n
+
+O- → থেকে গ্রহণ করা যেতে পারে: O- শুধুমাত্র\n
+O+ → থেকে গ্রহণ করা যেতে পারে: O-, O+\n
+A- → থেকে গ্রহণ করা যেতে পারে: O-, A-\n
+A+ → থেকে গ্রহণ করা যেতে পারে: O-, O+, A-, A+\n
+B- → থেকে গ্রহণ করা যেতে পারে: O-, B-\n
+B+ → থেকে গ্রহণ করা যেতে পারে: O-, O+, B-, B+\n
+AB- → থেকে গ্রহণ করা যেতে পারে: O-, A-, B-, AB-\n
+AB+ → থেকে গ্রহণ করা যেতে পারে: সকলের\n\n"
+                />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:src="@drawable/chart"
+                android:scaleType="centerCrop"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="\nরক্তদান একটি নিরাপদ, উপকারী প্রক্রিয়া যা জীবন বাঁচায়। সঠিক প্রস্তুতি এবং পরবর্তী যত্নের মাধ্যমে,
+        সুস্থ ব্যক্তিরা প্রতিকূল প্রভাব ছাড়াই নিয়মিত রক্তদান করতে পারেন। সামঞ্জস্যতা বোঝা নিশ্চিত করে যে সঠিক রক্ত
+        সঠিক রোগীর কাছে পৌঁছায়। ব্যক্তিগত পরামর্শের জন্য সর্বদা ব্লাড ব্যাংক পেশাদারদের সাথে পরামর্শ করুন।"
+                android:layout_marginBottom="50dp"
+                />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
+</LinearLayout>

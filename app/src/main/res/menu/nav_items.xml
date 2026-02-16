@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+<group android:id="@+id/group1">
+    <item
+        android:id="@+id/MyProfile"
+        android:title="My Profile"
+        android:icon="@drawable/profilered"
+        android:iconTint="@color/black"
+        />
+    <item
+        android:id="@+id/Settings"
+        android:title="Settings"
+        android:icon="@drawable/settings"
+        />
+    <item
+        android:id="@+id/Privacy"
+        android:title="Privacy Policy"
+        android:icon="@drawable/privacypolicy"
+        />
+    <item
+        android:id="@+id/Feedback"
+        android:title="Feedback"
+        android:icon="@drawable/feedback"
+        />
+    <item
+        android:id="@+id/contact"
+        android:title="Contact Us"
+        android:icon="@drawable/supportus"
+        />
+    <item
+        android:id="@+id/About"
+        android:title="About"
+        android:icon="@drawable/question"
+        />
+
+</group>
+
+</menu>
