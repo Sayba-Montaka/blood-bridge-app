@@ -14,14 +14,16 @@
         android:orientation="horizontal"
         >
         <ImageView
+            android:id="@+id/backArrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/backarrow"
-            android:tint="@color/white"
+            app:tint="@color/white"
             android:layout_margin="10dp"
 
             />
         <TextView
+            android:fontFamily="@font/font_family"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
@@ -56,7 +58,8 @@
             android:text="Show Notification"
             android:layout_weight="5"
             />
-        <androidx.appcompat.widget.AppCompatToggleButton
+        <Switch
+            android:id="@+id/notification_switch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -74,7 +77,8 @@
             android:text="Dark Mode"
             android:layout_weight="5"
             />
-        <androidx.appcompat.widget.AppCompatToggleButton
+        <Switch
+            android:id="@+id/dark_switch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -86,7 +90,16 @@
         android:text="Delete Acoount?"
         android:textColor="#AE0303"
         />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="If you want to delete the account, first delete your donor account in become a donor"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        />
     <Button
+        android:id="@+id/delete_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Delete Account"

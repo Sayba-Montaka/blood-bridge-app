@@ -26,6 +26,7 @@
                     android:src="@android:drawable/ic_menu_close_clear_cancel"/>
 
                 <TextView
+                    android:fontFamily="@font/font_family"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="New To-do"
@@ -42,12 +43,36 @@
                 android:layout_height="wrap_content"
                 android:hint="Set a new date"
                 app:hintTextColor="@color/black"
+                android:id="@+id/dateInput"
+                app:endIconMode="dropdown_menu"
                 >
-                <com.google.android.material.textfield.TextInputEditText
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/set_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/circle_transparent"
+                    android:padding="9dp"
+                    android:textColor="@color/black"
+                    android:inputType="date"
+
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="your blood donation number"
+                app:hintTextColor="@color/black"
+                android:id="@+id/number_do_input"
+                android:maxEms="2"
+
+                >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/number_of_blood_given"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:inputType="number"
+                    android:textColor="@color/black"
                     />
             </com.google.android.material.textfield.TextInputLayout>
             <!-- Footer -->

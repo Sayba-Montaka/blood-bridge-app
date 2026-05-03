@@ -9,11 +9,29 @@
     android:orientation="vertical"
     android:background="#AE0303">
 
-    <LinearLayout
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/backwhite"
+        android:layout_margin="@dimen/_10sdp"
+        />
+    <TextView
+        android:fontFamily="@font/font_family"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Edit Profile"
+        android:gravity="center"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:textColor="@color/white"
+        android:layout_marginBottom="20dp" />
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@android:color/white"
+        app:cardCornerRadius="@dimen/_30sdp"
+        app:cardBackgroundColor="@android:color/white"
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,23 +39,36 @@
             android:orientation="vertical"
             android:layout_margin="20dp"
             >
-            <ImageView
-                android:id="@+id/backArrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/backarrow"
-                android:layout_marginBottom="20dp"
-                />
+
+
+
+            <RelativeLayout
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_gravity="center"
+                >
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/P_A_image"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:src="@drawable/theme"
+                    android:scaleType="centerCrop"
+                    android:padding="2dp"
+                    app:strokeWidth="2dp"
+                    app:strokeColor="#0B1757"
+                    app:shapeAppearanceOverlay="@style/OvalImage"
+                    />
+                <ImageView
+                    android:id="@+id/choose_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/camera"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    />
+            </RelativeLayout>
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Edit Profile"
-                android:gravity="center"
-                android:textSize="24dp"
-                android:textStyle="bold"
-                android:textColor="#AE0303"
-                android:layout_marginBottom="20dp" />
-            <TextView
+                android:fontFamily="@font/font_family"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Username"
@@ -53,12 +84,15 @@
                 android:hint=" your username"
                 >
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/user_name_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
+                    android:textColor="@color/black"
                     />
             </com.google.android.material.textfield.TextInputLayout>
             <TextView
+                android:fontFamily="@font/font_family"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Email"
@@ -75,12 +109,15 @@
                 android:hint=" Your email"
                 >
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/email_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
+                    android:textColor="@color/black"
                     />
             </com.google.android.material.textfield.TextInputLayout>
             <TextView
+                android:fontFamily="@font/font_family"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Password"
@@ -97,22 +134,35 @@
                 android:hint="Your password"
                 app:endIconCheckable="true"
                 app:endIconMode="password_toggle"
+
                 >
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/pass_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
+                    android:textColor="@color/black"
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                />
             <Button
+                android:id="@+id/update"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Update Information"
                 android:backgroundTint="#AE0303"
-                android:layout_margin="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="5dp"
                 android:textColor="@android:color/white"
                 />
         </LinearLayout>
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>

@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center"
-            android:layout_margin="30dp"
+            android:layout_margin="20dp"
             >
             <RelativeLayout
                 android:layout_width="140dp"
@@ -37,6 +37,7 @@
                     app:shapeAppearanceOverlay="@style/OvalImage"
                     />
                 <ImageView
+                    android:id="@+id/choose_photo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/camera"
@@ -45,6 +46,7 @@
                     />
             </RelativeLayout>
             <TextView
+                android:fontFamily="@font/font_family"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Username"
@@ -64,9 +66,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
+                    android:textColor="@color/black"
                     />
             </com.google.android.material.textfield.TextInputLayout>
             <TextView
+                android:fontFamily="@font/font_family"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Email"
@@ -86,10 +90,12 @@
                 android:id="@+id/EmailEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/black"
                 />
             </com.google.android.material.textfield.TextInputLayout>
             <TextView
+                android:fontFamily="@font/font_family"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Password"
@@ -112,16 +118,24 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
+                    android:textColor="@color/black"
                     />
             </com.google.android.material.textfield.TextInputLayout>
-
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                />
             <Button
                 android:id="@+id/signIn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Sign In"
                 android:backgroundTint="#AE0303"
-                android:layout_margin="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="5dp"
                 android:textColor="@android:color/white"
                 />
             <LinearLayout
@@ -155,6 +169,7 @@
                 android:id="@+id/googleSignIn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/circle_transparent"
                 />
 
         </LinearLayout>

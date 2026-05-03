@@ -16,6 +16,7 @@
         android:background="@android:color/white"
         >
         <ImageView
+            android:id="@+id/backArrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/backarrow"
@@ -27,6 +28,7 @@
             android:src="@drawable/feedbackimg"
             />
         <TextView
+            android:fontFamily="@font/font_family"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text=" Feedback"
@@ -127,6 +129,7 @@
                 </LinearLayout>
             </LinearLayout>
         <TextView
+            android:fontFamily="@font/font_family"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text=" Comment(Optional)"

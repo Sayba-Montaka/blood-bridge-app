@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:background="#AE0303">
 
-    <LinearLayout
+>    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -18,23 +18,58 @@
         <!-- Header -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="65dp"
             android:background="#AE0303"
             android:gravity="center_vertical"
-            android:padding="10dp">
-
-            <TextView
-                android:id="@+id/chatName"
+            android:padding="10dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/backArrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Name Chat"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
+                android:src="@drawable/backwhite"
+                android:layout_marginRight="@dimen/_15sdp"
+                />
+<com.google.android.material.imageview.ShapeableImageView
+    android:layout_width="48dp"
+    android:id="@+id/imageOfM"
+    android:layout_height="48dp"
+    android:src="@drawable/theme"
+    app:strokeWidth="2dp"
+    android:padding="2dp"
+    app:strokeColor="#0B1757"
+    android:scaleType="centerCrop"
+    app:shapeAppearanceOverlay="@style/OvalImage"
+    />
+     <LinearLayout
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+         >
+         <TextView
+             android:id="@+id/chatName"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="Name Chat"
+             android:textColor="@android:color/white"
+             android:textSize="18sp"
+             android:layout_marginLeft="15dp"
+             android:textStyle="bold"/>
+         <TextView
+             android:id="@+id/online"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="online"
+             android:textColor="@android:color/white"
+             android:textSize="10sp"
+             android:layout_marginLeft="15dp"
+             />
+     </LinearLayout>
+
         </LinearLayout>
 
         <!-- Messages -->
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/messageRecycler"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -45,21 +80,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="8dp">
+            android:padding="8dp"
+            android:layout_alignParentBottom="true">
 
-            <EditText
-                android:id="@+id/messageInput"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Type message"/>
+                android:layout_height="wrap_content"
+                android:hint="Text your message"
+                >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/messageInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textLongMessage"
+                    android:textColor="@color/black"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <ImageButton
-                android:id="@+id/sendBtn"
+            <ImageView
+                android:id="@+id/sendButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:src="@drawable/send"/>
+                android:src="@drawable/send"
+                android:layout_marginTop="13dp"
+                android:layout_marginLeft="5dp"
+                />
         </LinearLayout>
 
     </LinearLayout>

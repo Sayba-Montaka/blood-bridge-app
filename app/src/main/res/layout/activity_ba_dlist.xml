@@ -8,37 +8,42 @@
     tools:context=".B_A_D_List"
     android:orientation="vertical"
     android:background="#AE0303">
+    <ImageView
+        android:id="@+id/backArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/backwhite"
+        android:focusable="true"
+        android:clickable="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:background="?attr/selectableItemBackground"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_100sdp"
+        android:text="Donor Information"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_18sdp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/font_family"
+        />
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/white"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/_30sdp"
        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="20dp"
+            android:gravity="center"
+            android:layout_margin="@dimen/_20sdp"
             android:orientation="vertical"
             >
-
-            <ImageView
-                android:id="@+id/backArrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/backarrow"
-                android:layout_marginBottom="30dp"
-                />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Donor Information"
-                android:textStyle="bold"
-                android:textSize="20dp"
-                android:gravity="center"
-                android:textColor="#0B1757"
-                android:layout_marginBottom="30dp"
-                />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,6 +68,7 @@
                     android:textColor="@color/black"
                     />
                 <TextView
+                    android:id="@+id/donor_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Jubayer Hossain"
@@ -88,6 +94,7 @@
                     android:textColor="@color/black"
                     />
                 <TextView
+                    android:fontFamily="@font/font_family"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text=":"
@@ -95,6 +102,7 @@
                     android:textColor="@color/black"
                     />
                 <TextView
+                    android:id="@+id/bloodGroup"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Jubayer Hossain"
@@ -121,6 +129,7 @@
                     android:textColor="@color/black"
                     />
                 <TextView
+                    android:fontFamily="@font/font_family"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text=":"
@@ -128,39 +137,7 @@
                     android:textColor="@color/black"
                     />
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Jubayer Hossain"
-                    android:layout_weight="5"
-                    android:textColor="@color/black"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="10"
-                android:background="@drawable/divider"
-                android:padding="10dp"
-                >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Location"
-                    android:layout_weight="4"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    />
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text=":"
-                    android:layout_weight="1"
-                    android:textColor="@color/black"
-                    />
-                <TextView
+                    android:id="@+id/phone_number"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Jubayer Hossain"
@@ -187,6 +164,7 @@
                     android:textColor="@color/black"
                     />
                 <TextView
+                    android:fontFamily="@font/font_family"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text=":"
@@ -194,6 +172,7 @@
                     android:textColor="@color/black"
                     />
                 <TextView
+                    android:id="@+id/gender"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Jubayer Hossain"
@@ -214,12 +193,13 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Area"
+                    android:text="Location"
                     android:layout_weight="4"
                     android:textStyle="bold"
                     android:textColor="@color/black"
                     />
                 <TextView
+                    android:fontFamily="@font/font_family"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text=":"
@@ -227,6 +207,7 @@
                     android:textColor="@color/black"
                     />
                 <TextView
+                    android:id="@+id/location"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Jubayer Hossain"
@@ -235,14 +216,51 @@
                     />
 
             </LinearLayout>
+
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:id="@+id/progressBar"
+                />
             <Button
+
+            android:id="@+id/editDonor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:backgroundTint="#AE0303"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/white"
+            android:clickable="true"
+            android:focusable="true"
+            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="If you want to uninstall the app, before uninstall delete your donor account"
+                android:textColor="@color/black"
+                android:gravity="center"
+                />
+            <Button
+                android:id="@+id/deleteDonor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Edit"
+                android:text="Delete Donor"
                 android:backgroundTint="#AE0303"
-                android:layout_margin="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:textColor="@color/white"
+                android:clickable="true"
+                android:focusable="true"
                 />
+
     </LinearLayout>
-    </LinearLayout>
+        
+    </androidx.cardview.widget.CardView>
 </LinearLayout>

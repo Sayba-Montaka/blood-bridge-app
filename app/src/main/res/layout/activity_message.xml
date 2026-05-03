@@ -12,17 +12,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:weightSum="5"
         android:orientation="horizontal"
         >
         <ImageView
-            android:layout_width="wrap_content"
+            android:id="@+id/backArrow"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:src="@drawable/backarrow"
-            android:tint="@color/white"
+            app:tint="@color/white"
+            android:layout_weight="0.3"
             android:layout_margin="10dp"
 
             />
         <TextView
+            android:fontFamily="@font/font_family"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
@@ -44,15 +48,31 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_margin="30dp"
+            android:layout_margin="10dp"
             >
 
             <!-- Notification List -->
-            <ListView
-                android:id="@+id/notification_view"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/message_view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:backgroundTint="#AE0303"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/plus"
+                    android:id="@+id/fab"
+                    />
+            </RelativeLayout>
+
 
             <!-- Bottom Nav -->
             <com.google.android.material.bottomnavigation.BottomNavigationView

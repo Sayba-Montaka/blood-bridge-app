@@ -20,6 +20,8 @@
                 android:background="@color/white"
                 >
                 <TextView
+                    android:fontFamily="@font/font_family"
+                    android:id="@+id/bloodGroup"
                     android:layout_marginTop="5dp"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
@@ -58,6 +60,7 @@
                         android:textColor="@color/black"
                         />
                     <TextView
+                        android:id="@+id/name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="Jubayer Hossain"
@@ -90,6 +93,7 @@
                         android:textColor="@color/black"
                         />
                     <TextView
+                        android:id="@+id/phone_number"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="Jubayer Hossain"
@@ -99,38 +103,7 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="10"
-                    android:background="@drawable/divider"
-                    android:padding="10dp"
-                    >
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="Location"
-                        android:layout_weight="4"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        />
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text=":"
-                        android:layout_weight="1"
-                        android:textColor="@color/black"
-                        />
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="Jubayer Hossain"
-                        android:layout_weight="5"
-                        android:textColor="@color/black"
-                        />
 
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -156,6 +129,7 @@
                         android:textColor="@color/black"
                         />
                     <TextView
+                        android:id="@+id/gender"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="Jubayer Hossain"
@@ -164,7 +138,6 @@
                         />
 
                 </LinearLayout>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -176,7 +149,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Area"
+                        android:text="Location"
                         android:layout_weight="4"
                         android:textStyle="bold"
                         android:textColor="@color/black"
@@ -189,13 +162,17 @@
                         android:textColor="@color/black"
                         />
                     <TextView
+                        android:id="@+id/location"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="Jubayer Hossain"
                         android:layout_weight="5"
                         android:textColor="@color/black"
                         />
+
                 </LinearLayout>
+
+
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>

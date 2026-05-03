@@ -16,6 +16,7 @@
         android:background="@android:color/white"
         >
         <ImageView
+            android:id="@+id/backArrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/backarrow"
@@ -34,6 +35,7 @@
             android:layout_margin="30dp"
             >
             <TextView
+                android:fontFamily="@font/font_family"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Contact Us"
@@ -51,6 +53,7 @@
                 android:layout_marginTop="10dp"
                 >
                 <ImageView
+                    android:id="@+id/call"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/call"
@@ -63,6 +66,7 @@
                     android:padding="5dp"
                     >
                     <TextView
+                        android:fontFamily="@font/font_family"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Phone No"
@@ -71,9 +75,10 @@
                         android:textColor="@color/black"
                         />
                     <TextView
+                        android:id="@+id/number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="01799948488"
+                        android:text="01967139986"
                         android:textStyle="bold"
                         android:textSize="12dp"
                         android:textColor="@color/black"
@@ -89,6 +94,7 @@
                 android:layout_marginTop="10dp"
                 >
                 <ImageView
+                    android:id="@+id/email_to"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/email"
@@ -101,6 +107,7 @@
                     android:padding="5dp"
                     >
                     <TextView
+                        android:fontFamily="@font/font_family"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Email"
@@ -109,9 +116,11 @@
                         android:textColor="@color/black"
                         />
                     <TextView
+                        android:id="@+id/email"
+                        android:fontFamily="@font/font_family"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="01799948488"
+                        android:text="saybamontaka@gmail.com"
                         android:textStyle="bold"
                         android:textSize="12dp"
                         android:textColor="@color/black"

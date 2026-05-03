@@ -21,11 +21,12 @@
             android:layout_margin="20dp"
             >
             <TextView
+                android:fontFamily="@font/font_family"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Find Donor"
                 android:gravity="center"
-                android:textSize="24dp"
+                android:textSize="20dp"
                 android:textStyle="bold"
                 android:textColor="#AE0303"
                 android:layout_marginBottom="20dp"
@@ -43,8 +44,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scrollbars="none"
+
             >
             <LinearLayout
+                android:id="@+id/blood_group_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -53,6 +56,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     app:cardCornerRadius="10dp"
+                    android:tag="A+"
                     app:cardBackgroundColor="#FAC7C7"
                     android:layout_marginRight="5dp"
                     >
@@ -68,6 +72,7 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:tag="B+"
                     app:cardCornerRadius="10dp"
                     app:cardBackgroundColor="#CBDEED"
                     android:layout_marginRight="5dp"
@@ -84,6 +89,7 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:tag="AB+"
                     app:cardCornerRadius="10dp"
                     app:cardBackgroundColor="#EFDABC"
                     android:layout_marginRight="5dp"
@@ -91,7 +97,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="A+"
+                        android:text="AB+"
                         android:layout_gravity="center"
                         android:textStyle="bold"
                         android:textColor="@color/black"
@@ -100,6 +106,7 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:tag="O+"
                     app:cardCornerRadius="10dp"
                     app:cardBackgroundColor="#F0EBBF"
                     android:layout_marginRight="5dp"
@@ -107,7 +114,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="B+"
+                        android:text="O+"
                         android:layout_gravity="center"
                         android:textStyle="bold"
                         android:textColor="@color/black"
@@ -116,6 +123,7 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:tag="A-"
                     app:cardCornerRadius="10dp"
                     app:cardBackgroundColor="#C9EFEB"
                     android:layout_marginRight="5dp"
@@ -123,7 +131,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="A+"
+                        android:text="A-"
                         android:layout_gravity="center"
                         android:textStyle="bold"
                         android:textColor="@color/black"
@@ -132,6 +140,7 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:tag="B-"
                     app:cardCornerRadius="10dp"
                     app:cardBackgroundColor="#E7A4BB"
                     android:layout_marginRight="5dp"
@@ -139,7 +148,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="B+"
+                        android:text="B-"
                         android:layout_gravity="center"
                         android:textStyle="bold"
                         android:textColor="@color/black"
@@ -148,6 +157,7 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:tag="AB-"
                     app:cardCornerRadius="10dp"
                     app:cardBackgroundColor="#E6B5EF"
                     android:layout_marginRight="5dp"
@@ -155,7 +165,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="A+"
+                        android:text="AB-"
                         android:layout_gravity="center"
                         android:textStyle="bold"
                         android:textColor="@color/black"
@@ -164,6 +174,7 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:tag="O-"
                     app:cardCornerRadius="10dp"
                     app:cardBackgroundColor="#D9C9F6"
                     android:layout_marginRight="5dp"
@@ -171,7 +182,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="B+"
+                        android:text="O-"
                         android:layout_gravity="center"
                         android:textStyle="bold"
                         android:textColor="@color/black"
@@ -182,46 +193,71 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Select District(জেলা নির্বাচন করুন)"
-                android:padding="10dp"
+                android:hint="Select Division(বিভাগ নির্বাচন করুন)"
                 app:endIconMode="dropdown_menu"
                 >
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/division"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"/>
+                    android:padding="6dp"
+                    android:textColor="@color/black"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Select District(জেলা নির্বাচন করুন)"
+                app:endIconMode="dropdown_menu"
+                >
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/district"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="6dp"
+                    android:textColor="@color/black"/>
 
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Select Area(এলাকা নির্বাচন করুন)"
-                android:padding="10dp"
-                app:endIconMode="dropdown_menu"
+
                 >
-                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/area"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"/>
+                    android:padding="6dp"
+                    android:textColor="@color/black"
+                    />
 
             </com.google.android.material.textfield.TextInputLayout>
-            <Button
-                android:layout_width="match_parent"
+            <ProgressBar
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#AE0303"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:textColor="@color/white"
-                android:text="Search Donor"
-                android:layout_marginBottom="20dp"
+                android:id="@+id/progressBar"
+                android:layout_gravity="center"
+                android:visibility="gone"
                 />
+             <Button
+                 android:id="@+id/search_donor"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:backgroundTint="#AE0303"
+                 android:layout_marginRight="20dp"
+                 android:layout_marginLeft="20dp"
+                 android:textColor="@color/white"
+                 android:text="Search Donor"
+                 android:layout_marginBottom="10dp"
+                 />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:background="@android:color/white">
 
-                <!-- LIST VIEW (SCROLLABLE AREA) -->
+
                 <ListView
                     android:id="@+id/search_list"
                     android:layout_width="match_parent"
@@ -231,14 +267,8 @@
                     android:divider="#0B1757"
                     android:dividerHeight="1dp"/>
 
-                <!-- BOTTOM NAVIGATION (FIXED) -->
-                <com.google.android.material.bottomnavigation.BottomNavigationView
-                    android:id="@+id/bottom_nav"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_margin="20dp"
-                    android:background="@drawable/footer_back"
-                    app:menu="@menu/footer_items"/>
+
+
 
             </LinearLayout>
 

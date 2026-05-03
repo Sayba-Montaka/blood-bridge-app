@@ -15,15 +15,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_margin="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             >
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="2dp"
                 app:cardCornerRadius="10dp"
                 >
-
                 <LinearLayout
                     android:padding="12dp"
                     android:layout_width="match_parent"

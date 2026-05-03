@@ -15,24 +15,21 @@
     android:orientation="vertical"
     android:background="@color/white"
     >
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/tips2"
-        />
-    <ImageView
-        android:id="@+id/tips"
+        android:id="@+id/backArrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/backarrow"
-        android:layout_margin="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
         />
-</RelativeLayout>
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animationView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        app:lottie_rawRes="@raw/tips"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true" />
 
     <ScrollView
         android:layout_width="match_parent"

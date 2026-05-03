@@ -6,21 +6,25 @@
             android:id="@+id/Home"
             android:title=""
             android:icon="@drawable/home"
+
             />
         <item
             android:id="@+id/messenger"
             android:title=""
             android:icon="@drawable/messenger"
+
             />
         <item
             android:id="@+id/noti"
             android:title=""
             android:icon="@drawable/notification"
+
             />
         <item
             android:id="@+id/profile"
             android:title=""
             android:icon="@drawable/profile"
+
             />
 
 

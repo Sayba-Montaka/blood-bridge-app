@@ -16,6 +16,7 @@
         android:background="@android:color/white"
         >
         <ImageView
+            android:id="@+id/backArrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/backarrow"
@@ -30,6 +31,7 @@
         app:lottie_loop="true" />
 
     <TextView
+        android:fontFamily="@font/font_family"
         android:id="@+id/text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

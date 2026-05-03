@@ -14,6 +14,7 @@
         android:orientation="horizontal"
         >
         <ImageView
+            android:id="@+id/backArrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/backarrow"
@@ -22,6 +23,7 @@
 
             />
         <TextView
+            android:fontFamily="@font/font_family"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"

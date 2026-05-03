@@ -11,6 +11,7 @@
 
 
     <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/header_image"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:src="@drawable/theme"
@@ -21,8 +22,9 @@
         app:strokeColor="#0B1757"
         app:shapeAppearanceOverlay="@style/OvalImage" />
     <TextView
+        android:fontFamily="@font/font_family"
         android:layout_marginTop="10dp"
-        android:id="@+id/textView"
+        android:id="@+id/header_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Jubayer Hossain"
@@ -32,7 +34,8 @@
         />
 
     <TextView
-        android:id="@+id/textView2"
+        android:fontFamily="@font/font_family"
+        android:id="@+id/header_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="juba@gmail.com"

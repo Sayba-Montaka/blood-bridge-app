@@ -8,6 +8,7 @@
     >
 
     <Button
+        android:id="@+id/nav_footer_logout"
         android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,6 +20,7 @@
         />
 
     <TextView
+        android:fontFamily="@font/font_family"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="App Version : "
@@ -28,6 +30,7 @@
         android:layout_marginLeft="10dp"
         />
     <TextView
+        android:fontFamily="@font/font_family"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Privcy Policy and Terms of Service"

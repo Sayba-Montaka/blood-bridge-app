@@ -31,6 +31,7 @@
                 android:layout_marginBottom="20dp"
                 />
             <TextView
+                android:fontFamily="@font/font_family"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Details Information"
@@ -64,6 +65,40 @@
                     android:textColor="@color/black"
                     />
                 <TextView
+                    android:id="@+id/name_of_request"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Jubayer Hossain"
+                    android:layout_weight="5"
+                    android:textColor="@color/black"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="10"
+                android:background="@drawable/divider"
+                android:padding="10dp"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Phone number"
+                    android:layout_weight="4"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:layout_weight="1"
+                    android:textColor="@color/black"
+                    />
+                <TextView
+                    android:id="@+id/phone_of_request"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Jubayer Hossain"
@@ -83,7 +118,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Phone Number"
+                    android:text="Email"
                     android:layout_weight="4"
                     android:textStyle="bold"
                     android:textColor="@color/black"
@@ -96,6 +131,7 @@
                     android:textColor="@color/black"
                     />
                 <TextView
+                    android:id="@+id/email_of_request"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Jubayer Hossain"
@@ -103,10 +139,12 @@
                     android:textColor="@color/black"
                     />
                 <ImageView
+                    android:id="@+id/select_person"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/m_red"
                     />
+
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -132,6 +170,7 @@
                     android:textColor="@color/black"
                     />
                 <TextView
+                    android:id="@+id/group_of_request"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Jubayer Hossain"
@@ -140,40 +179,6 @@
                     />
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="10"
-                android:background="@drawable/divider"
-                android:padding="10dp"
-                >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="number of bags"
-                    android:layout_weight="4"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    />
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text=":"
-                    android:layout_weight="1"
-                    android:textColor="@color/black"
-                    />
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Jubayer Hossain"
-                    android:layout_weight="5"
-                    android:textColor="@color/black"
-                    />
-
-            </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -198,6 +203,7 @@
                     android:textColor="@color/black"
                     />
                 <TextView
+                    android:id="@+id/gender_of_request"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Jubayer Hossain"
@@ -231,6 +237,7 @@
                     android:textColor="@color/black"
                     />
                 <TextView
+                    android:id="@+id/disease_of_request"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Jubayer Hossain"
@@ -263,6 +270,7 @@
                     android:textColor="@color/black"
                     />
                 <TextView
+                    android:id="@+id/deadline_of_request"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Jubayer Hossain"
@@ -295,6 +303,7 @@
                     android:textColor="@color/black"
                     />
                 <TextView
+                    android:id="@+id/unit_of_blood"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Jubayer Hossain"
@@ -314,7 +323,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="District"
+                    android:text="Location"
                     android:layout_weight="4"
                     android:textStyle="bold"
                     android:textColor="@color/black"
@@ -327,38 +336,7 @@
                     android:textColor="@color/black"
                     />
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Jubayer Hossain"
-                    android:layout_weight="5"
-                    android:textColor="@color/black"
-                    />
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="10"
-                android:background="@drawable/divider"
-                android:padding="10dp"
-                >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Area"
-                    android:layout_weight="4"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    />
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text=":"
-                    android:layout_weight="1"
-                    android:textColor="@color/black"
-                    />
-                <TextView
+                    android:id="@+id/location_of_request"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Jubayer Hossain"
@@ -391,6 +369,7 @@
                     android:textColor="@color/black"
                     />
                 <TextView
+                    android:id="@+id/hoapital_of_request"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Jubayer Hossain"
@@ -400,6 +379,7 @@
 
             </LinearLayout>
             <Button
+                android:id="@+id/call"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#AE0303"
@@ -408,14 +388,6 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 />
-
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottom_nav"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_margin="20dp"
-                android:background="@drawable/footer_back"
-                app:menu="@menu/footer_items"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
