@@ -196,6 +196,11 @@ ProgressBar progressBar;
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 response -> {
+                    new AlertDialog.Builder(Login.this)
+                            .setTitle("Alert")
+                            .setMessage(response)
+                            .create()
+                            .show();
                     if (response.contains("SignIn Successful")) {
                         SharedPreferences prefs = getSharedPreferences("BloodBank", MODE_PRIVATE);
                         prefs.edit()
@@ -204,7 +209,7 @@ ProgressBar progressBar;
                                 .putString("image", photo)
                                 .apply();
 
-                        startActivity(new Intent(Login.this, MainActivity.class));
+                        startActivity(new Intent(Login.this, ResetPass.class));
                         finish();
                     }
                 },

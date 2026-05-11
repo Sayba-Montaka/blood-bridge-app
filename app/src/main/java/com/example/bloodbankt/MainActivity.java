@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -54,6 +55,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -105,6 +110,8 @@ public class MainActivity extends BaseActivity {
     View header_view;
     SharedPreferences sharedPreferences;
     String nextDate;
+    AdView adView;
+    FrameLayout ad_view_container;
     MyAdapter myAdapter;
     HashMap<String,String> hashMap ;
     ArrayList<HashMap<String,String>> arrayList = new ArrayList<>();
@@ -140,12 +147,14 @@ public class MainActivity extends BaseActivity {
         date_last = findViewById(R.id.date_last);
         donation_num = findViewById(R.id.donation_num);
         leftDays = findViewById(R.id.leftDays);
+        ad_view_container = findViewById(R.id.ad_view_container);
         footer_container = nav_view.findViewById(R.id.footer_container);
         header_view = nav_view.getHeaderView(0);
         header_name = header_view.findViewById(R.id.header_name);
         header_image = header_view.findViewById(R.id.header_image);
         header_email = header_view.findViewById(R.id.header_email);
         firebaseAuth = FirebaseAuth.getInstance();
+
         sharedPreferences = getSharedPreferences("BloodBank",MODE_PRIVATE);
 
         //=======================last donation date=========================================
@@ -248,9 +257,27 @@ public class MainActivity extends BaseActivity {
         items();
    myAdapter = new MyAdapter();
        grid_view.setAdapter(myAdapter);
+        //======================banner add===============================================
+        new Thread(
+                () -> {
+                    // Initialize the Google Mobile Ads SDK on a background thread.
+                    MobileAds.initialize(this, initializationStatus -> {});
+                })
+                .start();
 
+// Create a new ad view.
+        adView = new AdView(this);
+        adView.setAdUnitId(getString(R.string.banner_add_id));
+// Request a large anchored adaptive banner with a width of 360.
+        adView.setAdSize(new AdSize(320,48));
+
+// Replace ad container with new ad view.
+        ad_view_container.removeAllViews();
+        ad_view_container.addView(adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
     }
-
+    //======================banner add===============================================
     //-------------------------firebase authenticaion---------------------------------------
     @Override
     protected void onStart() {

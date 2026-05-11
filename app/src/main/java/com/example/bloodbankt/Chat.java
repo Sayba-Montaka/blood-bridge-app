@@ -1,9 +1,22 @@
 package com.example.bloodbankt;
 
+import android.Manifest;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.media.MediaActionSound;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,15 +24,22 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.webkit.internal.ApiFeature;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputEditText;
@@ -29,6 +49,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,6 +71,40 @@ public class Chat extends AppCompatActivity {
     ArrayList<HashMap<String, String>> messageList = new ArrayList<>();
     ChatAdapter chatAdapter;
     DatabaseReference chatRef;
+    Uri cameraImageUri;
+    ImageView    attachButton ;
+    // Gallery picker
+    ActivityResultLauncher<String> galleryLauncher = registerForActivityResult(
+            new ActivityResultContracts.GetContent(),
+            uri -> {
+                if (uri != null) sendImage(uri);
+            });
+
+    // Camera picker
+    ActivityResultLauncher<Uri> cameraLauncher = registerForActivityResult(
+            new ActivityResultContracts.TakePicture(),
+            success -> {
+                if (success && cameraImageUri != null) sendImage(cameraImageUri);
+            });
+
+    // Permission launcher
+    ActivityResultLauncher<String[]> permissionLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestMultiplePermissions(),
+            result -> {
+                boolean allGranted = true;
+                for (boolean granted : result.values()) {
+                    if (!granted) { allGranted = false; break; }
+                }
+                if (allGranted) showImageSourceDialog();
+                else Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+            });
+
+    // View types
+    private static final int VIEW_TYPE_SENT          = 1;
+    private static final int VIEW_TYPE_RECEIVED      = 2;
+    private static final int VIEW_TYPE_SENT_IMAGE    = 3;
+    private static final int VIEW_TYPE_RECEIVED_IMAGE = 4;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +113,13 @@ public class Chat extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            Insets imeInsets  = insets.getInsets(WindowInsetsCompat.Type.ime());
+            v.setPadding(
+                    systemBars.left,
+                    systemBars.top,
+                    systemBars.right,
+                    Math.max(systemBars.bottom, imeInsets.bottom)
+            );
             return insets;
         });
 
@@ -65,6 +130,7 @@ public class Chat extends AppCompatActivity {
         messageInput = findViewById(R.id.messageInput);
         messageRecycler = findViewById(R.id.messageRecycler);
         onlineStatus = findViewById(R.id.online);
+        attachButton    = findViewById(R.id.attachButton);
 
 
         // ── Receiver info from Intent ──────────────────────────────────────────
@@ -80,7 +146,6 @@ public class Chat extends AppCompatActivity {
         chatName.setText(receiverName);
         Glide.with(this).load(receiverImage).placeholder(R.drawable.theme).into(imageOfM);
 
-        onlineStatus = findViewById(R.id.online);
         listenToPresence(receiverEmail); //
 
         backArrow.setOnClickListener(v ->
@@ -92,6 +157,9 @@ public class Chat extends AppCompatActivity {
 
         // ── One unique room ID for this pair, no matter the entry point ────────
         chatRoomId = ChatManager.getChatRoomId(senderEmail, receiverEmail);
+
+        markMessagesAsRead(chatRoomId);
+
 
         chatRef = FirebaseDatabase.getInstance().getReference("chats").child(chatRoomId);
 
@@ -117,28 +185,122 @@ public class Chat extends AppCompatActivity {
             messageInput.setText("");
         });
 
+        // ── Attach image button ────────────────────────────────────────────────
+        attachButton.setOnClickListener(v -> checkPermissionsAndOpenPicker());
+
         // ── Listen for messages ────────────────────────────────────────────────
         chatRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 messageList.clear();
+                long latestTs = 0;
+
                 for (DataSnapshot data : snapshot.getChildren()) {
                     HashMap<String, String> msg = new HashMap<>();
-                    msg.put("sender",    data.child("sender").getValue(String.class));
-                    msg.put("message",   data.child("message").getValue(String.class));
+                    msg.put("sender",  data.child("sender").getValue(String.class));
+                    msg.put("message", data.child("message").getValue(String.class));
+                    msg.put("type",    data.child("type").getValue(String.class));
                     Long ts = data.child("timestamp").getValue(Long.class);
+                    if (ts != null && ts > latestTs) latestTs = ts;
                     msg.put("timestamp", ts != null ? formatTime(ts) : "");
                     messageList.add(msg);
                 }
+
+                if (latestTs > 0) {
+                    getSharedPreferences("BloodBank", MODE_PRIVATE).edit()
+                            .putLong("last_seen_" + chatRoomId, latestTs).apply();
+                }
+
                 chatAdapter.notifyDataSetChanged();
-                // scroll to latest
                 if (!messageList.isEmpty())
                     messageRecycler.scrollToPosition(messageList.size() - 1);
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            @Override public void onCancelled(@NonNull DatabaseError error) {}
         });
+    }
+
+    // ── Permission check ───────────────────────────────────────────────────────
+    private void checkPermissionsAndOpenPicker() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // Android 13+ — READ_MEDIA_IMAGES
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
+                    == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                            == PackageManager.PERMISSION_GRANTED) {
+                showImageSourceDialog();
+            } else {
+                permissionLauncher.launch(new String[]{
+                        Manifest.permission.READ_MEDIA_IMAGES,
+                        Manifest.permission.CAMERA});
+            }
+        } else {
+            // Android 12 and below
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                            == PackageManager.PERMISSION_GRANTED) {
+                showImageSourceDialog();
+            } else {
+                permissionLauncher.launch(new String[]{
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.CAMERA});
+            }
+        }
+    }
+
+    // ── Show gallery or camera choice ──────────────────────────────────────────
+    private void showImageSourceDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Send Image")
+                .setItems(new String[]{"Choose from Gallery", "Take Photo"}, (dialog, which) -> {
+                    if (which == 0) {
+                        // Gallery
+                        galleryLauncher.launch("image/*");
+                    } else {
+                        // Camera
+                        try {
+                            File imageFile = File.createTempFile("IMG_", ".jpg", getCacheDir());
+                            cameraImageUri = FileProvider.getUriForFile(
+                                    this, getPackageName() + ".provider", imageFile);
+                            cameraLauncher.launch(cameraImageUri);
+                        } catch (IOException e) {
+                            Toast.makeText(this, "Error opening camera", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).show();
+    }
+
+    // ── Convert image URI to Base64 and send ───────────────────────────────────
+    private void sendImage(Uri uri) {
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+
+            // Compress to reduce Firebase storage size
+            Bitmap scaled = scaleBitmap(bitmap, 800);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            scaled.compress(Bitmap.CompressFormat.JPEG, 60, baos);
+            String base64Image = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("sender",    senderEmail);
+            map.put("receiver",  receiverEmail);
+            map.put("message",   base64Image);   // store image as base64
+            map.put("type",      "image");        // type = image
+            map.put("timestamp", System.currentTimeMillis());
+
+            chatRef.push().setValue(map);
+
+        } catch (IOException e) {
+            Toast.makeText(this, "Failed to send image", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Scale bitmap to max width to save space
+    private Bitmap scaleBitmap(Bitmap bitmap, int maxWidth) {
+        if (bitmap.getWidth() <= maxWidth) return bitmap;
+        float ratio = (float) maxWidth / bitmap.getWidth();
+        int newHeight = (int) (bitmap.getHeight() * ratio);
+        return Bitmap.createScaledBitmap(bitmap, maxWidth, newHeight, true);
     }
 
     private String formatTime(long millis) {
@@ -146,53 +308,123 @@ public class Chat extends AppCompatActivity {
     }
 
     // ── Chat Adapter ───────────────────────────────────────────────────────────
-    private static final int VIEW_TYPE_SENT     = 1;
-    private static final int VIEW_TYPE_RECEIVED = 2;
-
-    public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MsgViewHolder> {
+    public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
         public int getItemViewType(int position) {
-            String sender = messageList.get(position).get("sender");
-            return (sender != null && sender.equals(senderEmail))
-                    ? VIEW_TYPE_SENT : VIEW_TYPE_RECEIVED;
+            HashMap<String, String> msg = messageList.get(position);
+            String sender = msg.get("sender");
+            String type   = msg.get("type");
+            boolean isSent = sender != null && sender.equals(senderEmail);
+
+            if ("image".equals(type)) {
+                return isSent ? VIEW_TYPE_SENT_IMAGE : VIEW_TYPE_RECEIVED_IMAGE;
+            } else {
+                return isSent ? VIEW_TYPE_SENT : VIEW_TYPE_RECEIVED;
+            }
         }
 
         @NonNull
         @Override
-        public MsgViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            int layout = (viewType == VIEW_TYPE_SENT)
-                    ? R.layout.item_message_sent
-                    : R.layout.item_message_received;
-            View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
-            return new MsgViewHolder(v);
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            switch (viewType) {
+                case VIEW_TYPE_SENT:
+                    return new TextVH(inflater.inflate(R.layout.item_message_sent, parent, false));
+                case VIEW_TYPE_RECEIVED:
+                    return new TextVH(inflater.inflate(R.layout.item_message_received, parent, false));
+                case VIEW_TYPE_SENT_IMAGE:
+                    return new ImageVH(inflater.inflate(R.layout.item_image_sent, parent, false));
+                case VIEW_TYPE_RECEIVED_IMAGE:
+                    return new ImageVH(inflater.inflate(R.layout.item_image_received, parent, false));
+                default:
+                    return new TextVH(inflater.inflate(R.layout.item_message_sent, parent, false));
+            }
         }
 
         @Override
-        public void onBindViewHolder(@NonNull MsgViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             HashMap<String, String> msg = messageList.get(position);
-            holder.messageText.setText(msg.get("message"));
-            holder.timeText.setText(msg.get("timestamp"));
+
+            if (holder instanceof TextVH) {
+                TextVH vh = (TextVH) holder;
+                vh.messageText.setText(msg.get("message"));
+                vh.timeText.setText(msg.get("timestamp"));
+
+            } else if (holder instanceof ImageVH) {
+                ImageVH vh = (ImageVH) holder;
+                vh.timeText.setText(msg.get("timestamp"));
+
+                String base64 = msg.get("message");
+
+                if(vh.download_button != null){
+                    String sender = msg.get("sender");
+                    boolean isReceived = sender == null || !sender.equals(senderEmail);
+                    vh.download_button.setVisibility(isReceived ? View.VISIBLE: View.GONE);
+                }
+                if (base64 != null && !base64.isEmpty()) {
+                    try {
+                        byte[] bytes = Base64.decode(base64, Base64.DEFAULT);
+                        Glide.with(Chat.this)
+                                .load(bytes)
+                                .placeholder(R.drawable.theme)
+                                .into(vh.messageImage);
+                    } catch (Exception e) {
+                        vh.messageImage.setImageResource(R.drawable.theme);
+                    }
+                }
+
+                vh.messageImage.setOnClickListener(v -> {
+                    String b64 = msg.get("message");
+                    if (b64 != null) {
+                        Intent intent = new Intent(Chat.this, FullImageActivity.class);
+                        intent.putExtra("base64", b64);
+                        startActivity(intent);
+                    }
+                });
+                if(vh.download_button != null){
+                    vh.download_button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(base64 != null && !base64.isEmpty()){
+                                captureAndSaveLayout(vh.messageImage);
+                            }else{
+                                Toast.makeText(Chat.this, "No image to save", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            }
         }
 
         @Override
         public int getItemCount() { return messageList.size(); }
 
-        public class MsgViewHolder extends RecyclerView.ViewHolder {
+        // Text message ViewHolder
+        class TextVH extends RecyclerView.ViewHolder {
             TextView messageText, timeText;
-            MsgViewHolder(@NonNull View itemView) {
+            TextVH(@NonNull View itemView) {
                 super(itemView);
                 messageText = itemView.findViewById(R.id.messageText);
                 timeText    = itemView.findViewById(R.id.timeText);
             }
         }
+
+        // Image message ViewHolder
+        class ImageVH extends RecyclerView.ViewHolder {
+            ImageView messageImage;
+            TextView timeText,download_button;
+            ImageVH(@NonNull View itemView) {
+                super(itemView);
+                messageImage = itemView.findViewById(R.id.messageImage);
+                timeText     = itemView.findViewById(R.id.timeText);
+                download_button     = itemView.findViewById(R.id.download_button);
+            }
+        }
     }
 
-
     private void listenToPresence(String email) {
-        // ✅ Guard against null or empty email
         if (email == null || email.isEmpty()) return;
-
         String safeEmail = email.trim().replace(".", ",");
         FirebaseDatabase.getInstance()
                 .getReference("presence").child(safeEmail)
@@ -219,4 +451,92 @@ public class Chat extends AppCompatActivity {
                     @Override public void onCancelled(@NonNull DatabaseError error) {}
                 });
     }
+
+    private void markMessagesAsRead(String roomId) {
+        getSharedPreferences("BloodBank", MODE_PRIVATE).edit()
+                .putLong("last_seen_" + roomId, System.currentTimeMillis()).apply();
+    }
+    private void captureAndSaveLayout(View view) {
+
+        Bitmap bitmap = Bitmap.createBitmap(
+                view.getWidth(),
+                view.getHeight(),
+                Bitmap.Config.ARGB_8888
+        );
+
+        Canvas canvas = new Canvas(bitmap);
+
+        Drawable bgDrawable = view.getBackground();
+
+        if (bgDrawable != null) {
+            bgDrawable.draw(canvas);
+        } else {
+            canvas.drawColor(Color.WHITE);
+        }
+
+        view.draw(canvas);
+
+        saveBitmapToGallery(bitmap);
+    }
+    private void saveBitmapToGallery(Bitmap bitmap) {
+
+        String filename = "chat_image_" + System.currentTimeMillis() + ".jpg";
+
+        OutputStream fos = null;
+
+        try {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+
+                ContentResolver resolver = getContentResolver();
+
+                ContentValues contentValues = new ContentValues();
+
+                contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, filename);
+                contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
+                contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH,
+                        Environment.DIRECTORY_PICTURES + "/BloodBridge");
+
+                Uri imageUri = resolver.insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        contentValues
+                );
+
+                fos = resolver.openOutputStream(imageUri);
+
+            } else {
+
+                File directory = new File(
+                        Environment.getExternalStoragePublicDirectory(
+                                Environment.DIRECTORY_PICTURES),
+                        "BloodBridge"
+                );
+
+                if (!directory.exists()) {
+                    directory.mkdirs();
+                }
+
+                File image = new File(directory, filename);
+
+                fos = new FileOutputStream(image);
+            }
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+
+            if (fos != null) {
+                fos.flush();
+                fos.close();
+            }
+
+            Toast.makeText(this, "Saved to gallery!", Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
+
+

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -135,6 +136,12 @@ TextView location,gender,phone_number,bloodGroup,donorName;
                 };
                 RequestQueue requestQueue = Volley.newRequestQueue(B_A_D_List.this);
                 requestQueue.add(stringRequest);
+            }
+        });
+        getOnBackPressedDispatcher().addCallback(B_A_D_List.this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                startActivity(new Intent(B_A_D_List.this,MainActivity.class));
             }
         });
     }

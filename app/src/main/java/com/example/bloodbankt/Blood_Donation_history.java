@@ -1,5 +1,6 @@
 package com.example.bloodbankt;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
@@ -116,5 +118,11 @@ Button download_button;
             e.printStackTrace();
             Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show();
         }
+        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                startActivity(new Intent(Blood_Donation_history.this, Profile.class));
+            }
+        });
     }
 }

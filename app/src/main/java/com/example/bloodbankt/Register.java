@@ -152,13 +152,15 @@ ImageView choose_photo;
                 String email = EmailEdit.getText().toString();
                 String password = PassEdit.getText().toString();
 
-                BitmapDrawable bitmapDrawable = (BitmapDrawable) imageView.getDrawable();
-                Bitmap bitmap = bitmapDrawable.getBitmap();
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG,50,byteArrayOutputStream);
-                byte[] imageBytes = byteArrayOutputStream.toByteArray();
+                if (imageView.getDrawable() != null) {
+                    BitmapDrawable bitmapDrawable = (BitmapDrawable) imageView.getDrawable();
+                    Bitmap bitmap = bitmapDrawable.getBitmap();
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG,50,byteArrayOutputStream);
+                    byte[] imageBytes = byteArrayOutputStream.toByteArray();
 
-                String image = Base64.encodeToString(imageBytes,Base64.DEFAULT);
+                    String image = Base64.encodeToString(imageBytes,Base64.DEFAULT);
+
                 progressBar.setVisibility(View.VISIBLE);
                 //------------------Volley String request------------------------------------------------
 
@@ -173,7 +175,7 @@ ImageView choose_photo;
                         if (s.contains("SignIn Successful")) {
                             Toast.makeText(Register.this, s, Toast.LENGTH_LONG).show();
 
-                            String uid = email.replace(".", ","); // ✅ comma
+                            String uid = email.replace(".", ",");
 
                             dbref.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -205,7 +207,6 @@ ImageView choose_photo;
                                     .create()
                                     .show();
                         }
-
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -236,8 +237,13 @@ ImageView choose_photo;
                         return myMap;
                     }
                 };
+
                 RequestQueue requestQueue = Volley.newRequestQueue(Register.this);
                 requestQueue.add(stringRequest);
+                } else {
+                    Toast.makeText(Register.this, "Please select image", Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
         });
 
@@ -273,7 +279,6 @@ ImageView choose_photo;
                             public void onSuccess(AuthResult authResult) {
 
                                 FirebaseUser user = firebaseAuth.getCurrentUser();
-
                                 String name_f = user.getDisplayName();
                                 String email_f = user.getEmail();
                                 Uri image_f = user.getPhotoUrl();
@@ -295,8 +300,13 @@ ImageView choose_photo;
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 response -> {
-                    if (response.trim().equalsIgnoreCase("SignIn Successful")) {
-
+                   new AlertDialog.Builder(Register.this)
+                           .setTitle("Alert")
+                           .setMessage(response)
+                           .create()
+                           .show();
+                    if (response.contains("SignIn Successful")) {
+                        Toast.makeText(Register.this,response,Toast.LENGTH_LONG).show();
 
                         String uid = email.replace(".", ",");
 
@@ -314,7 +324,7 @@ ImageView choose_photo;
                                 .putString("image", photo)
                                 .apply();
 
-                        startActivity(new Intent(Register.this, MainActivity.class));
+                        startActivity(new Intent(Register.this, ResetPass.class));
                         finish();
                     }
                 },

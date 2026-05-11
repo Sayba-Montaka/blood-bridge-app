@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -282,6 +283,7 @@ public class Blood_Requests extends AppCompatActivity {
             public void onResponse(JSONArray jsonArray) {
                 arrayList.clear();
                 progressBar.setVisibility(View.GONE);
+                Log.d("REQ_RES", "onResponse: "+ jsonArray);
 
                 for(int i = 0; i < jsonArray.length(); i++){
                     try {

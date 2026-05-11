@@ -43,7 +43,7 @@
         android:id="@+id/login_first"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="GET STARTED ⏩"
         android:backgroundTint="#AE0303"
         android:layout_margin="30dp"
         android:textColor="@android:color/white"

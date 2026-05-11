@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.gms.ads.nativead.NativeAdView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/native_ad_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+   android:layout_margin="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <!-- Ad label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ad"
+            android:textSize="10sp"
+            android:textColor="#FFFFFF"
+            android:background="#AE0303"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:layout_marginBottom="4dp"/>
+
+        <!-- Headline -->
+        <TextView
+            android:id="@+id/ad_headline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="#0B1757"
+            android:maxLines="2"/>
+
+        <!-- Body -->
+        <TextView
+            android:id="@+id/ad_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:textColor="#777777"
+            android:maxLines="2"
+            android:layout_marginTop="2dp"/>
+
+        <!-- Call to action -->
+        <TextView
+            android:id="@+id/ad_call_to_action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#AE0303"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp"
+            android:padding="2dp"
+            android:layout_marginTop="2dp"/>
+
+    </LinearLayout>
+
+</com.google.android.gms.ads.nativead.NativeAdView>

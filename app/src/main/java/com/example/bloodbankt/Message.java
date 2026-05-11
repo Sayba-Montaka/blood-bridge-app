@@ -19,6 +19,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdLoader;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.nativead.NativeAd;
+import com.google.android.gms.ads.nativead.NativeAdView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,7 +40,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 public class Message extends BaseActivity {
 
@@ -41,11 +47,18 @@ public class Message extends BaseActivity {
     FloatingActionButton fab;
     ImageView backArrow;
     String loginEmail, safeLoginEmail;
-
-    // Store all users from Firebase once, then match against chat rooms
     HashMap<String, HashMap<String, String>> usersMap = new HashMap<>();
+
+    //  Mixed list — holds both ConversationModel and NativeAd
+    ArrayList<Object> displayList = new ArrayList<>();
     ArrayList<ConversationModel> conversationList = new ArrayList<>();
+
     ConversationAdapter adapter;
+    NativeAd loadedNativeAd;
+
+    private static final int AD_INTERVAL = 1; // show ad every 5 messages
+    private static final int VIEW_TYPE_CONVERSATION = 1;
+    private static final int VIEW_TYPE_AD = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +70,13 @@ public class Message extends BaseActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        new Thread(
+                () -> {
+                    // Initialize the Google Mobile Ads SDK on a background thread.
+                    MobileAds.initialize(this, initializationStatus -> {});
+                })
+                .start();
 
         setupBottomNavigation(R.id.messenger);
         message_view = findViewById(R.id.message_view);
@@ -83,15 +103,44 @@ public class Message extends BaseActivity {
         adapter = new ConversationAdapter();
         message_view.setAdapter(adapter);
 
-        // Step 1: Load ALL users first, then load chat rooms
+        loadNativeAd();
         loadAllUsersThenChats();
     }
+    private void loadNativeAd() {
+        AdLoader adLoader = new AdLoader.Builder(this,
+                getString(R.string.native_add_id))
+                .forNativeAd(nativeAd -> {
+                    loadedNativeAd = nativeAd;
+                    // Rebuild display list with ad injected
+                    buildDisplayList();
+                    adapter.notifyDataSetChanged();
+                })
+                .withAdListener(new AdListener() {
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError adError) {
+                        Log.e("AD", "Failed to load: " + adError.getMessage());
+                    }
+                })
+                .build();
 
-    /**
-     * STEP 1 — fetch every user from Firebase into usersMap (keyed by email).
-     * STEP 2 — once we have users, scan chat rooms for this user.
-     * This avoids nested async calls that caused race conditions before.
-     */
+        adLoader.loadAd(new AdRequest.Builder().build());
+    }
+
+    // Build display list inserting ad every AD_INTERVAL conversations
+    private void buildDisplayList() {
+        displayList.clear();
+        int convCount = 0;
+        for (ConversationModel conv : conversationList) {
+            displayList.add(conv);
+            convCount++;
+            // Insert ad after every AD_INTERVAL conversations
+            if (convCount % AD_INTERVAL == 0 && loadedNativeAd != null) {
+                displayList.add(loadedNativeAd);
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
+
     private void loadAllUsersThenChats() {
         if (loginEmail.isEmpty()) return;
 
@@ -101,43 +150,25 @@ public class Message extends BaseActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         usersMap.clear();
-
                         for (DataSnapshot userNode : snapshot.getChildren()) {
-
-                            // ── CASE 1: node key looks like an email (hedayetullah123@gmail_com)
-                            // and the value is a HashMap with name/email/image inside it
-                            String nodeKey = userNode.getKey(); // e.g. "hedayetullah123@gmail_com"
-
                             String email = userNode.child("email").getValue(String.class);
                             String name  = userNode.child("name").getValue(String.class);
                             String image = userNode.child("image").getValue(String.class);
 
-                            // ── CASE 2: data is nested one level deeper (users/users/key = {email,name,image})
-                            // Check if this node itself has children that are user objects
                             if (email == null) {
                                 for (DataSnapshot nested : userNode.getChildren()) {
                                     String nestedEmail = nested.child("email").getValue(String.class);
                                     String nestedName  = nested.child("name").getValue(String.class);
                                     String nestedImage = nested.child("image").getValue(String.class);
-
-                                    // Also try: the nested key itself is the safe email
                                     if (nestedEmail == null) {
-                                        // The object might be stored as value under the email key
-                                        // Try getting email from the key
-                                        String keyAsEmail = nested.getKey();
-                                        if (keyAsEmail != null) {
-                                            nestedEmail = keyAsEmail.replace("_", "."); // gmail_com → gmail.com
-                                            // But this gives wrong result, so try getValue as map
-                                            Object val = nested.getValue();
-                                            if (val instanceof java.util.HashMap) {
-                                                java.util.HashMap map = (java.util.HashMap) val;
-                                                if (map.containsKey("email")) nestedEmail = (String) map.get("email");
-                                                if (map.containsKey("name"))  nestedName  = (String) map.get("name");
-                                                if (map.containsKey("image")) nestedImage = (String) map.get("image");
-                                            }
+                                        Object val = nested.getValue();
+                                        if (val instanceof HashMap) {
+                                            HashMap map = (HashMap) val;
+                                            if (map.containsKey("email")) nestedEmail = (String) map.get("email");
+                                            if (map.containsKey("name"))  nestedName  = (String) map.get("name");
+                                            if (map.containsKey("image")) nestedImage = (String) map.get("image");
                                         }
                                     }
-
                                     if (nestedEmail != null && !nestedEmail.trim().isEmpty()) {
                                         addToUsersMap(nestedEmail.trim(), nestedName, nestedImage);
                                     }
@@ -146,55 +177,32 @@ public class Message extends BaseActivity {
                                 addToUsersMap(email.trim(), name, image);
                             }
                         }
-
-                        Log.d("MSG_DEBUG", "usersMap final keys: " + usersMap.keySet());
                         listenToChatRooms();
                     }
-
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Log.e("MSG_DEBUG", "Failed: " + error.getMessage());
-                    }
+                    public void onCancelled(@NonNull DatabaseError error) {}
                 });
     }
 
-    // Helper to avoid duplicate code
     private void addToUsersMap(String email, String name, String image) {
         HashMap<String, String> info = new HashMap<>();
         info.put("name",  name  != null ? name  : "Unknown");
         info.put("image", image != null ? image : "");
-        usersMap.put(email, info);                        // with dots
-        usersMap.put(email.replace(".", ","), info);      // with commas
-        Log.d("MSG_DEBUG", "Added to usersMap: " + email);
+        usersMap.put(email, info);
+        usersMap.put(email.replace(".", ","), info);
     }
 
-    /**
-     * STEP 2 — listen to chats/ in real time.
-     * For each room that contains safeLoginEmail, find the other person,
-     * grab last message, match with usersMap, build ConversationModel.
-     */
     private void listenToChatRooms() {
         FirebaseDatabase.getInstance().getReference("chats")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                        // ✅ ADD THESE DEBUG LOGS FIRST
-                        Log.d("MSG_DEBUG", "Total chat rooms found: " + snapshot.getChildrenCount());
-                        Log.d("MSG_DEBUG", "My safe email: " + safeLoginEmail);
-
-
                         conversationList.clear();
 
                         for (DataSnapshot room : snapshot.getChildren()) {
-                            Log.d("MSG_DEBUG", "Room ID: " + room.getKey());
                             String roomId = room.getKey();
-                            if (roomId == null) continue;
+                            if (roomId == null || !roomId.contains(safeLoginEmail)) continue;
 
-                            // Only process rooms this user belongs to
-                            if (!roomId.contains(safeLoginEmail)) continue;
-
-                            // ── Find the other person's email ──────────────────
                             String[] parts = roomId.split("_");
                             if (parts.length != 2) continue;
 
@@ -202,7 +210,6 @@ public class Message extends BaseActivity {
                                     ? parts[1] : parts[0];
                             String otherEmail = otherSafeEmail.replace(",", ".");
 
-                            // ── Get last message from this room ────────────────
                             String lastMsg  = "";
                             String lastTime = "";
                             long   latestTs = 0;
@@ -218,30 +225,20 @@ public class Message extends BaseActivity {
                                 }
                             }
 
-                            // Replace the userInfo lookup line with this:
-                            HashMap<String, String> userInfo = usersMap.get(otherEmail); // dots
-                            if (userInfo == null) {
-                                userInfo = usersMap.get(otherEmail.replace(".", ",")); // try commas
-                            }
-                            if (userInfo == null) {
-                                Log.e("MSG_DEBUG", "STILL not found for: " + otherEmail);
-                                Log.e("MSG_DEBUG", "Available keys: " + usersMap.keySet());
-                                continue;
-                            }
-
-                            String name  = userInfo.get("name");
-                            String image = userInfo.get("image");
+                            HashMap<String, String> userInfo = usersMap.get(otherEmail);
+                            if (userInfo == null) userInfo = usersMap.get(otherEmail.replace(".", ","));
+                            if (userInfo == null) continue;
 
                             conversationList.add(new ConversationModel(
-                                    name, otherEmail, image, lastMsg, lastTime, latestTs));
+                                    userInfo.get("name"), otherEmail,
+                                    userInfo.get("image"), lastMsg, lastTime, latestTs));
                         }
 
-                        // Sort by latest message (newest first, like WhatsApp)
                         conversationList.sort((a, b) -> Long.compare(b.timestamp, a.timestamp));
 
-                        adapter.notifyDataSetChanged();
+                        // Rebuild display list with ads injected
+                        buildDisplayList();
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {}
                 });
@@ -250,76 +247,92 @@ public class Message extends BaseActivity {
     // ── Model ──────────────────────────────────────────────────────────────────
     public static class ConversationModel {
         public String name, email, image, lastMessage, lastTime;
-        public long   timestamp;
-
+        public long timestamp;
         public ConversationModel(String name, String email, String image,
                                  String lastMessage, String lastTime, long timestamp) {
-            this.name        = name;
-            this.email       = email;
-            this.image       = image;
-            this.lastMessage = lastMessage;
-            this.lastTime    = lastTime;
-            this.timestamp   = timestamp;
+            this.name = name; this.email = email; this.image = image;
+            this.lastMessage = lastMessage; this.lastTime = lastTime;
+            this.timestamp = timestamp;
         }
     }
 
     // ── Adapter ────────────────────────────────────────────────────────────────
-    public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.VH> {
+    public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+        @Override
+        public int getItemViewType(int position) {
+            return displayList.get(position) instanceof NativeAd
+                    ? VIEW_TYPE_AD : VIEW_TYPE_CONVERSATION;
+        }
 
         @NonNull
         @Override
-        public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_message, parent, false);
-            return new VH(v);
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            if (viewType == VIEW_TYPE_AD) {
+
+                View v = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_native_ad, parent, false);
+                return new AdVH(v);
+            } else {
+                View v = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_message, parent, false);
+                return new VH(v);
+            }
         }
 
         @Override
-        public void onBindViewHolder(@NonNull VH holder, int position) {
-            ConversationModel conv = conversationList.get(position);
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+            if (getItemViewType(position) == VIEW_TYPE_AD) {
+                //  Bind native ad
+                NativeAd nativeAd = (NativeAd) displayList.get(position);
+                AdVH adVH = (AdVH) holder;
+                populateNativeAdView(nativeAd, adVH.adView);
+            } else {
+                // Bind conversation
+                ConversationModel conv = (ConversationModel) displayList.get(position);
+                VH vh = (VH) holder;
 
-            holder.M_name.setText(conv.name);
-            holder.last_message.setText(conv.lastMessage);
-            holder.last_m_time.setText(conv.lastTime);
+                vh.M_name.setText(conv.name);
+                vh.last_message.setText(conv.lastMessage);
+                vh.last_m_time.setText(conv.lastTime);
 
-            Glide.with(Message.this)
-                    .load(conv.image)
-                    .placeholder(R.drawable.theme)
-                    .into(holder.shapeImage);
+                Glide.with(Message.this)
+                        .load(conv.image)
+                        .placeholder(R.drawable.theme)
+                        .into(vh.shapeImage);
 
-            // ── Online dot ─────────────────────────────────────────────────
-            String safeOther = conv.email.replace(".", ",");
-            FirebaseDatabase.getInstance()
-                    .getReference("presence").child(safeOther)
-                    .addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            Boolean isOnline = snapshot.child("online").getValue(Boolean.class);
-                            holder.onlineDot.setVisibility(
-                                    isOnline != null && isOnline ? View.VISIBLE : View.GONE);
-                        }
-                        @Override public void onCancelled(@NonNull DatabaseError e) {}
-                    });
+                String safeOther = conv.email.replace(".", ",");
+                FirebaseDatabase.getInstance()
+                        .getReference("presence").child(safeOther)
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                Boolean isOnline = snapshot.child("online").getValue(Boolean.class);
+                                vh.onlineDot.setVisibility(
+                                        isOnline != null && isOnline ? View.VISIBLE : View.GONE);
+                            }
+                            @Override public void onCancelled(@NonNull DatabaseError e) {}
+                        });
 
-            // ── Click to open chat ─────────────────────────────────────────
-            holder.itemView.setOnClickListener(v -> {
-                if (conv.email == null || conv.email.isEmpty()) return; // guard
-                Intent intent = new Intent(Message.this, Chat.class);
-                intent.putExtra("email", conv.email != null ? conv.email : "");
-                intent.putExtra("name",  conv.name  != null ? conv.name  : "Unknown");
-                intent.putExtra("image", conv.image != null ? conv.image : "");
-                startActivity(intent);
-            });
+                vh.itemView.setOnClickListener(v -> {
+                    if (conv.email == null || conv.email.isEmpty()) return;
+                    Intent intent = new Intent(Message.this, Chat.class);
+                    intent.putExtra("email", conv.email);
+                    intent.putExtra("name",  conv.name  != null ? conv.name  : "Unknown");
+                    intent.putExtra("image", conv.image != null ? conv.image : "");
+                    startActivity(intent);
+                });
+            }
         }
 
         @Override
-        public int getItemCount() { return conversationList.size(); }
+        public int getItemCount() { return displayList.size(); }
 
+        // ── Conversation ViewHolder ────────────────────────────────────────
         public class VH extends RecyclerView.ViewHolder {
             ShapeableImageView shapeImage;
             TextView M_name, last_message, last_m_time;
             View onlineDot;
-
             public VH(@NonNull View itemView) {
                 super(itemView);
                 shapeImage   = itemView.findViewById(R.id.shapeImage);
@@ -329,5 +342,52 @@ public class Message extends BaseActivity {
                 onlineDot    = itemView.findViewById(R.id.onlineDot);
             }
         }
+
+        // ── Ad ViewHolder ──────────────────────────────────────────────────
+        public class AdVH extends RecyclerView.ViewHolder {
+            NativeAdView adView;
+            public AdVH(@NonNull View itemView) {
+                super(itemView);
+                adView = itemView.findViewById(R.id.native_ad_view);
+            }
+        }
+    }
+
+    //  Populate NativeAdView with ad assets
+    private void populateNativeAdView(NativeAd nativeAd, NativeAdView adView) {
+        // Headline
+        TextView headlineView = adView.findViewById(R.id.ad_headline);
+        headlineView.setText(nativeAd.getHeadline());
+        adView.setHeadlineView(headlineView);
+
+        // Body
+        TextView bodyView = adView.findViewById(R.id.ad_body);
+        if (nativeAd.getBody() != null) {
+            bodyView.setText(nativeAd.getBody());
+            bodyView.setVisibility(View.VISIBLE);
+        } else {
+            bodyView.setVisibility(View.GONE);
+        }
+        adView.setBodyView(bodyView);
+
+        // Call to action
+        TextView ctaView = adView.findViewById(R.id.ad_call_to_action);
+        if (nativeAd.getCallToAction() != null) {
+            ctaView.setText(nativeAd.getCallToAction());
+            ctaView.setVisibility(View.VISIBLE);
+        } else {
+            ctaView.setVisibility(View.INVISIBLE);
+        }
+        adView.setCallToActionView(ctaView);
+
+        // Register the native ad object
+        adView.setNativeAd(nativeAd);
+    }
+
+    @Override
+    protected void onDestroy() {
+        //  Always destroy native ad to free memory
+        if (loadedNativeAd != null) loadedNativeAd.destroy();
+        super.onDestroy();
     }
 }

@@ -69,4 +69,6 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:34.12.0"))
     // Add the dependency for the Realtime Database library
     implementation("com.google.firebase:firebase-database")
+    //google ad
+    implementation("com.google.android.gms:play-services-ads:25.2.0")
     }
