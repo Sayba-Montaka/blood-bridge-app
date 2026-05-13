@@ -4,7 +4,6 @@
     <string name="SAMPLE_APP_ID">ca-app-pub-3940256099942544~3347511713</string>
     <string name="banner_add_id">ca-app-pub-3940256099942544/9214589741</string>
     <string name="native_add_id">ca-app-pub-3940256099942544/2247696110</string>
-    <string name="google_map_api">AIzaSyCYl-qWdMctqsNZV3JfTZngvCpXQXEkzRU</string>
     <string name="drawer_close">Close Drawer</string>
     <string name="drawer_open">Open Drawer</string>
     <string name="Show_notifications">Show Notifications</string>

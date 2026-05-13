@@ -11,6 +11,10 @@ android {
 
     defaultConfig {
         applicationId "com.example.bloodbankt"
+        def MAPS_API_KEY = project.findProperty("MAPS_API_KEY") ?: ""
+        manifestPlaceholders = [
+                MAPS_API_KEY: MAPS_API_KEY
+        ]
         minSdk 24
         targetSdk 36
         versionCode 1
