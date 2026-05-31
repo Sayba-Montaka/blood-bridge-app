@@ -23,6 +23,17 @@
     >
     <TextView
         android:fontFamily="@font/font_family"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:gravity="center"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:textColor="#AE0303"
+        android:layout_marginBottom="20dp" />
+    <TextView
+        android:fontFamily="@font/font_family"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Username or Email"
@@ -60,7 +71,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Your password"
+        android:hint="6-digit password"
         app:endIconCheckable="true"
         app:endIconMode="password_toggle"
         >
@@ -113,7 +124,7 @@
             android:id="@+id/signUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign In"
+            android:text="Sign Up"
             android:textColor=" #AE0303"
             />
     </LinearLayout>

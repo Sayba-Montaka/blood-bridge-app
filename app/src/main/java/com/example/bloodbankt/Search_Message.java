@@ -129,7 +129,7 @@ public class Search_Message extends AppCompatActivity {
             holder.M_name.setText(name);
             holder.M_email.setText(email);
             Glide.with(Search_Message.this)
-                    .load("https://googix.xyz/blood_bridge/" + image)
+                    .load("https://blood-bridge.org/blood_bridge/" + image)
                     .into(holder.M_shapeImage);
 
             // In Search_Message onBindViewHolder:
@@ -162,7 +162,7 @@ public class Search_Message extends AppCompatActivity {
 
     private void objectRequest() {
 
-        String url = "https://googix.xyz/blood_bridge/search_messanger.php";
+        String url = "https://blood-bridge.org/blood_bridge/search_messanger.php";
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {

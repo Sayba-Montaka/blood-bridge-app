@@ -108,7 +108,7 @@ public class Settings extends AppCompatActivity {
     }
 
     private void deleteAccountFromServer() {
-        String url = "https://googix.xyz/blood_bridge/delete_account.php";
+        String url = "https://blood-bridge.org/blood_bridge/delete_account.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 response -> {

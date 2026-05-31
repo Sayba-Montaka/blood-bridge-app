@@ -109,7 +109,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Your password"
+                android:hint="6-digit password"
                 app:endIconCheckable="true"
                 app:endIconMode="password_toggle"
                 >
@@ -131,7 +131,7 @@
                 android:id="@+id/signIn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sign In"
+                android:text="Sign Up"
                 android:backgroundTint="#AE0303"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"

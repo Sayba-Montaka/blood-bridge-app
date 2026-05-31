@@ -58,7 +58,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_weight="7"
-                        android:hint="patient name">
+                        android:hint="রোগীর নাম লিখুন">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/patient_name"
@@ -87,7 +87,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_weight="7"
-                        android:hint="patient email">
+                        android:hint="রোগীর ইমেইল লিখুন">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/patient_email"
@@ -117,7 +117,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_weight="6"
-                        android:hint="your phone number">
+                        android:hint="ফোন নম্বর লিখুন">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/patient_phone"
@@ -148,7 +148,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_weight="6"
-                        android:hint="Select option"
+                        android:hint="  সিলেক্ট করুন"
                         app:endIconMode="dropdown_menu">
 
                         <com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -182,7 +182,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_weight="6"
-                        android:hint="Type of dieases">
+                        android:hint="রোগের ধরণ লিখুন">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/type_of_diseases"
@@ -212,7 +212,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
                         android:layout_weight="5"
-                        android:hint="Select option"
+                        android:hint="  সিলেক্ট করুন"
                         app:endIconMode="dropdown_menu">
 
                         <com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -245,7 +245,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="5"
-                        android:hint="Select option"
+                        android:hint="  সিলেক্ট করুন"
                         app:endIconMode="dropdown_menu">
 
                         <com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -278,7 +278,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
                         android:layout_weight="5"
-                        android:hint="Select option"
+                        android:hint="  সিলেক্ট করুন"
                         app:endIconMode="dropdown_menu">
 
                         <com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -310,7 +310,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_weight="5"
-                        android:hint="unit(maximum 10)">
+                        android:hint="রক্তের ব্যাগ [সর্বোচ্চ ১০]">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/unit_of_blood"
@@ -342,7 +342,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_weight="5"
-                        android:hint="Select option"
+                        android:hint="  সিলেক্ট করুন"
                         app:endIconMode="dropdown_menu">
 
                         <com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -375,7 +375,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_weight="5"
-                        android:hint="Select option"
+                        android:hint="  সিলেক্ট করুন"
                         app:endIconMode="dropdown_menu">
 
                         <com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -408,7 +408,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_weight="5"
-                        android:hint="your area">
+                        android:hint="হাসপাতালের এলাকাটি লিখুন">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/area"
@@ -438,7 +438,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_weight="5"
-                        android:hint="hospital name">
+                        android:hint="সঠিকভাবে লিখুন ">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/hospital_name"
@@ -461,7 +461,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="30dp"
                     android:backgroundTint="#AE0303"
-                    android:text="Save Information"
+                    android:text="Upload Information"
                     android:textColor="@android:color/white" />
             </LinearLayout>
         </ScrollView>

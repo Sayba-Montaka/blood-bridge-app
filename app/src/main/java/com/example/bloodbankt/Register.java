@@ -152,6 +152,11 @@ ImageView choose_photo;
                 String email = EmailEdit.getText().toString();
                 String password = PassEdit.getText().toString();
 
+                if (password.length() <6 ) {
+                    Toast.makeText(Register.this, "Password must contains 6-digit", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 if (imageView.getDrawable() != null) {
                     BitmapDrawable bitmapDrawable = (BitmapDrawable) imageView.getDrawable();
                     Bitmap bitmap = bitmapDrawable.getBitmap();
@@ -165,10 +170,11 @@ ImageView choose_photo;
                 //------------------Volley String request------------------------------------------------
 
 
-                String url ="https://googix.xyz/blood_bridge/signup.php";
+                String url ="https://blood-bridge.org/blood_bridge/signup.php";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
+                        Log.d("LOGIn_DEBUG",s);
                         progressBar.setVisibility(View.GONE);
 
 
@@ -296,7 +302,7 @@ ImageView choose_photo;
     }
     private void saveGoogleUserToServer(String name, String email, String photo) {
 
-        String url = "https://googix.xyz/blood_bridge/signup.php";
+        String url = "https://blood-bridge.org/blood_bridge/signup.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 response -> {

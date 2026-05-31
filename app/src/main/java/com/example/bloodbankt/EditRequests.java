@@ -260,7 +260,7 @@ public class EditRequests extends AppCompatActivity {
                     return;
                 }
                 progressBar.setVisibility(View.VISIBLE);
-                String url = "https://googix.xyz/blood_bridge/edit_request.php";
+                String url = "https://blood-bridge.org/blood_bridge/edit_request.php";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {

@@ -78,13 +78,17 @@ ImageView backArrow;
                     Toast.makeText(ResetPass.this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if (pass1.length() < 6) {
+                    Toast.makeText(ResetPass.this, "Password must contains 6-digit", Toast.LENGTH_LONG).show();
+                    return;
+                }
 
                 progressBar.setVisibility(View.VISIBLE);
 
                 SharedPreferences prefs = getSharedPreferences("BloodBank", MODE_PRIVATE);
                 String email = prefs.getString("email", "");
 
-                String url = "https://googix.xyz/blood_bridge/resetpass.php";
+                String url = "https://blood-bridge.org/blood_bridge/resetpass.php";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {

@@ -86,7 +86,7 @@ ProgressBar progressBar;
             public void onClick(View v) {
 
                 progressBar.setVisibility(View.VISIBLE);
-                String url ="https://googix.xyz/blood_bridge/login.php";
+                String url ="https://blood-bridge.org/blood_bridge/login.php";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
@@ -192,7 +192,7 @@ ProgressBar progressBar;
     }
     private void saveGoogleUserToServer(String name, String email, String photo) {
 
-        String url = "https://googix.xyz/blood_bridge/signup.php";
+        String url = "https://blood-bridge.org/blood_bridge/signup.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 response -> {

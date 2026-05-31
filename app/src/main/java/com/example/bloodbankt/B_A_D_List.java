@@ -101,7 +101,7 @@ TextView location,gender,phone_number,bloodGroup,donorName;
             @Override
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
-                String url = "https://googix.xyz/blood_bridge/deleteDonor.php";
+                String url = "https://blood-bridge.org/blood_bridge/deleteDonor.php";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {

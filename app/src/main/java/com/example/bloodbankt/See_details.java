@@ -101,7 +101,8 @@ public class See_details extends AppCompatActivity implements OnMapReadyCallback
         name = sharedPreferences.getString("request_name","");
         String phone = sharedPreferences.getString("number","");
         String email = sharedPreferences.getString("email","");
-        String Gender = sharedPreferences.getString("gender",""); blood_group = sharedPreferences.getString("bloodGroup","");
+        String Gender = sharedPreferences.getString("gender","");
+        blood_group = sharedPreferences.getString("bloodGroup","");
         hospital = sharedPreferences.getString("hospital","");
         String disease = sharedPreferences.getString("disease_type","");
         String unit = sharedPreferences.getString("unit","");

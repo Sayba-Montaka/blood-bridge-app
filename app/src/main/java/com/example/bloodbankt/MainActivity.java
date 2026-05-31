@@ -295,32 +295,69 @@ public class MainActivity extends BaseActivity {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (firebaseUser != null) {
+            Uri photoUri = firebaseUser.getPhotoUrl();
 
-            String name = firebaseUser.getDisplayName();
+            String name   = firebaseUser.getDisplayName();
             String fEmail = firebaseUser.getEmail();
-            Uri uri = firebaseUser.getPhotoUrl();
 
-            sharedPreferences = getSharedPreferences("BloodBank",MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("email",fEmail);
-            editor.putString("username", name);
-            editor.putString("image", String.valueOf(uri));
-            editor.apply();
+            if (name  != null) { Username.setText(name); header_name.setText(name); }
+            if (fEmail != null) header_email.setText(fEmail);
 
-            Username.setText(name);
-            header_name.setText(name);
-            header_email.setText(fEmail);
-
-            Glide.with(this).load(uri).into(shapeImage);
-            Glide.with(this).load(uri).into(header_image);
+            if (photoUri != null) {
+                Glide.with(this).load(photoUri)
+                        .placeholder(R.drawable.theme)
+                        .error(R.drawable.theme)
+                        .into(shapeImage);
+                Glide.with(this).load(photoUri)
+                        .placeholder(R.drawable.theme)
+                        .error(R.drawable.theme)
+                        .into(header_image);
+            }
         }
-
-        // 🔥 ALWAYS CALL API
         objectRequest();
         setGreeting();
     }
-    /* --------my Adapter--------*/
+    private void loadImageFromString(String image, ImageView target) {
+        if (image == null || image.isEmpty()) {
+            Log.e("IMAGE_DEBUG", "Image is null or empty");
+            target.setImageResource(R.drawable.theme);
+            return;
+        }
 
+        if (image.startsWith("http") || image.startsWith("https")) {
+            // ✅ URL image
+            Log.d("IMAGE_DEBUG", "Loading URL image: " + image);
+            Glide.with(this)
+                    .load(image)
+                    .placeholder(R.drawable.theme)
+                    .error(R.drawable.theme)
+                    .into(target);
+
+        } else if (image.startsWith("/9j/") || image.startsWith("iVBOR")) {
+            // ✅ Looks like Base64 — decode it
+            Log.d("IMAGE_DEBUG", "Loading Base64 image");
+            try {
+                byte[] bytes = Base64.decode(image, Base64.DEFAULT);
+                Glide.with(this)
+                        .load(bytes)
+                        .placeholder(R.drawable.theme)
+                        .error(R.drawable.theme)
+                        .into(target);
+            } catch (Exception e) {
+                Log.e("IMAGE_DEBUG", "Base64 decode failed: " + e.getMessage());
+                target.setImageResource(R.drawable.theme);
+            }
+
+        } else {
+            // ✅ Unknown format — try as URL first
+            Log.w("IMAGE_DEBUG", "Unknown image format, trying as URL");
+            Glide.with(this)
+                    .load(image)
+                    .placeholder(R.drawable.theme)
+                    .error(R.drawable.theme)
+                    .into(target);
+        }
+    }
     public class MyAdapter extends BaseAdapter{
 
         @Override
@@ -544,7 +581,7 @@ public class MainActivity extends BaseActivity {
     //---------------------object request for getting data from php===========================
     private void objectRequest(){
         Log.d("API_TEST","Request Started");
-        String url = "https://googix.xyz/blood_bridge/mainactivity.php";
+        String url = "https://blood-bridge.org/blood_bridge/mainactivity.php";
 
         JSONObject jsonObject = new JSONObject();
         try {
@@ -567,8 +604,8 @@ public class MainActivity extends BaseActivity {
                     String password = jsonObject.getString("Ppassword");
                     String totalDonors = jsonObject.getString("total_donors");
                     String totalRequests = jsonObject.getString("total_requests");
-                    Log.d("API_TEST","Donors: "+totalDonors);
-                    Log.d("API_TEST","Requests: "+totalRequests);
+                    Log.d("IMAGE_DEBUG", "Image value starts with: " +
+                            (image.length() > 30 ? image.substring(0, 30) : image));
 
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("name", name);
@@ -578,19 +615,20 @@ public class MainActivity extends BaseActivity {
                     editor.putString("total_donors_count", totalDonors);
                     editor.putString("total_requests_count", totalRequests);
                     editor.apply();
-                    items();
-                    if (grid_view.getAdapter() != null) {
-                        items();
-                        myAdapter.notifyDataSetChanged();
-                    }
 
                     Username.setText(name);
                     header_name.setText(name);
                     header_email.setText(email);
 
-                    Picasso.get().load(image).into(shapeImage);
-                    Picasso.get().load(image).into(header_image);
+                    items();
 
+                    if (grid_view.getAdapter() != null) {
+                        items();
+                        myAdapter.notifyDataSetChanged();
+                    }
+
+                    loadImageFromString(image, shapeImage);
+                    loadImageFromString(image, header_image);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
@@ -737,7 +775,7 @@ public class MainActivity extends BaseActivity {
         countdownHandler.removeCallbacks(countdownRunnable);
     }
     public void array_request(){
-        String url = "https://googix.xyz/blood_bridge/urgent.php";
+        String url = "https://blood-bridge.org/blood_bridge/urgent.php";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray jsonArray) {
@@ -855,7 +893,7 @@ public class MainActivity extends BaseActivity {
     }
     private void sendTokenToServer(String token){
 
-        String url = "https://googix.xyz/blood_bridge/save_token.php";
+        String url = "https://blood-bridge.org/blood_bridge/save_token.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 response -> {
@@ -906,7 +944,7 @@ public class MainActivity extends BaseActivity {
                 });
     }
     public void firebase_notification(){
-        String url = "https://googix.xyz/blood_bridge/firebase_notification.php";
+        String url = "https://blood-bridge.org/blood_bridge/firebase_notification.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {

@@ -56,7 +56,7 @@ public class Message extends BaseActivity {
     ConversationAdapter adapter;
     NativeAd loadedNativeAd;
 
-    private static final int AD_INTERVAL = 1; // show ad every 5 messages
+    private static final int AD_INTERVAL = 5; // show ad every 5 messages
     private static final int VIEW_TYPE_CONVERSATION = 1;
     private static final int VIEW_TYPE_AD = 2;
 

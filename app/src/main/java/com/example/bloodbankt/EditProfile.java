@@ -119,7 +119,7 @@ public class EditProfile extends AppCompatActivity {
 
                 String image = Base64.encodeToString(imageBytes,Base64.DEFAULT);
 
-                String url = "https://googix.xyz/blood_bridge/edit_profile.php";
+                String url = "https://blood-bridge.org/blood_bridge/edit_profile.php";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {

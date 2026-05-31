@@ -277,7 +277,7 @@ public class Blood_Requests extends AppCompatActivity {
         }
     }
     public void objectRequest(){
-        String url = "https://googix.xyz/blood_bridge/search_request.php";
+        String url = "https://blood-bridge.org/blood_bridge/search_request.php";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray jsonArray) {
@@ -337,7 +337,7 @@ public class Blood_Requests extends AppCompatActivity {
         requestQueue.add(jsonArrayRequest);
     }
     public void objectRequest1(){
-        String url = "https://googix.xyz/blood_bridge/request_blood_filter.php";
+        String url = "https://blood-bridge.org/blood_bridge/request_blood_filter.php";
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.POST, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray jsonArray) {

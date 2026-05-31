@@ -195,7 +195,7 @@ ArrayList<HashMap<String,String>> arrayList = new ArrayList<>();
     }
     private void objectRequest() {
 
-        String url = "https://googix.xyz/blood_bridge/search_donor.php";
+        String url = "https://blood-bridge.org/blood_bridge/search_donor.php";
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
@@ -245,7 +245,7 @@ ArrayList<HashMap<String,String>> arrayList = new ArrayList<>();
     }
     public void objectRequest1(){
 
-        String url = "https://googix.xyz/blood_bridge/searchDonorByFiltering.php";
+        String url = "https://blood-bridge.org/blood_bridge/searchDonorByFiltering.php";
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {

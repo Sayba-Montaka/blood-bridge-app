@@ -188,7 +188,7 @@ public class EditDonor extends AppCompatActivity {
                 }
 
                 progressBar.setVisibility(View.VISIBLE);
-                String url = "https://googix.xyz/blood_bridge/editDonor.php";
+                String url = "https://blood-bridge.org/blood_bridge/editDonor.php";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {

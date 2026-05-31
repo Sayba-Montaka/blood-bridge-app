@@ -72,7 +72,7 @@ public class FP_OTP extends AppCompatActivity {
                 String email = prefs.getString("email", "");
 
 
-                String url = "https://googix.xyz/blood_bridge/verifyOtp.php";
+                String url = "https://blood-bridge.org/blood_bridge/verifyOtp.php";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {

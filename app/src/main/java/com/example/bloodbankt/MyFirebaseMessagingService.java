@@ -72,7 +72,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     // [END on_new_token]
     private void sendRegistrationToServer(String token){
 
-        String url = "https://googix.xyz/blood_bridge/save_token.php";
+        String url = "https://blood-bridge.org/blood_bridge/save_token.php";
 
         SharedPreferences sp = getSharedPreferences("USER", MODE_PRIVATE);
         String phone = sp.getString("phone","");

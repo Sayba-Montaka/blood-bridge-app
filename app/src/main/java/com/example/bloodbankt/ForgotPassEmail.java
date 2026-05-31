@@ -61,7 +61,7 @@ ProgressBar progressBar;
                        Toast.makeText(ForgotPassEmail.this, "Enter your email first", Toast.LENGTH_LONG).show();
                    } else {
                        progressBar.setVisibility(View.VISIBLE);
-                       String url = "https://googix.xyz/blood_bridge/sendOtp.php";
+                       String url = "https://blood-bridge.org/blood_bridge/sendOtp.php";
 
                        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                            @Override

@@ -60,7 +60,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Your password"
+                android:hint="6-digit password"
                 app:endIconCheckable="true"
                 app:endIconMode="password_toggle"
                 >

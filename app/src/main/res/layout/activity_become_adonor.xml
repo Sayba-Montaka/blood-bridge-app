@@ -52,7 +52,7 @@
           <com.google.android.material.textfield.TextInputLayout
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:hint="your name"
+              android:hint="নাম লিখুন"
               android:layout_weight="5"
               android:layout_marginTop="10dp"
               >
@@ -84,7 +84,7 @@
           <com.google.android.material.textfield.TextInputLayout
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:hint="your phone number"
+              android:hint="ফোন নম্বর লিখুন"
               android:layout_weight="5"
               android:layout_marginTop="10dp"
               >
@@ -116,7 +116,7 @@
           <com.google.android.material.textfield.TextInputLayout
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:hint="Select option"
+              android:hint="  সিলেক্ট করুন"
               android:layout_weight="5"
               android:layout_marginTop="10dp"
               app:endIconMode="dropdown_menu">
@@ -150,7 +150,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_weight="5"
-              android:hint="Select option"
+              android:hint="  সিলেক্ট করুন"
               android:layout_marginTop="15dp"
               app:endIconMode="dropdown_menu">
 
@@ -181,7 +181,7 @@
               <com.google.android.material.textfield.TextInputLayout
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:hint="Select option"
+                  android:hint="  সিলেক্ট করুন"
                   android:layout_weight="5"
                   android:layout_marginTop="10dp"
                   app:endIconMode="dropdown_menu">
@@ -212,7 +212,7 @@
           <com.google.android.material.textfield.TextInputLayout
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:hint="Select option"
+              android:hint="  সিলেক্ট করুন"
               android:layout_weight="5"
               android:layout_marginTop="10dp"
               app:endIconMode="dropdown_menu">
@@ -244,7 +244,7 @@
           <com.google.android.material.textfield.TextInputLayout
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:hint="your area"
+              android:hint="এলাকাটি লিখুন"
               android:layout_weight="5"
               android:layout_marginTop="10dp"
               >

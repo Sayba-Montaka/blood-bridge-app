@@ -103,13 +103,21 @@ public class RequestForBlood extends AppCompatActivity {
 
                 timePicker.show(getSupportFragmentManager(), "TIME_PICKER");
 
-                timePicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String time = timePicker.getHour() + ":" + timePicker.getMinute();
-                        timeInput.setText(time);
-                    }
-                });
+      timePicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              int hour   = timePicker.getHour();
+              int minute = timePicker.getMinute();
+
+              String amPm    = hour >= 12 ? "PM" : "AM";
+              int hour12     = hour % 12;
+              if (hour12 == 0) hour12 = 12;
+              String minuteStr = minute < 10 ? "0" + minute : String.valueOf(minute);
+              String displayTime = hour12 + ":" + minuteStr + " " + amPm;
+
+              timeInput.setText(displayTime);
+          }
+      });
             }
         });
         /* -----------gender----------------------------*/
@@ -226,7 +234,7 @@ public class RequestForBlood extends AppCompatActivity {
                     return;
                 }
                 progressBar.setVisibility(View.VISIBLE);
-                String url = "https://googix.xyz/blood_bridge/request_for.php";
+                String url = "https://blood-bridge.org/blood_bridge/request_for.php";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {

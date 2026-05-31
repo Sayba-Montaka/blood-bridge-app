@@ -50,7 +50,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="We send a code via email.Enter that code confirm your account."
+                android:text="We send a code via email.Enter that code confirm your account.Check in spam."
                 android:gravity="center"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/black"
