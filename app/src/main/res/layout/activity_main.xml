@@ -197,7 +197,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="You can donate now ❤️ \n Give blood today—be the reason someone lives tomorrow."
+                        android:text="You can donate now ❤️"
                         android:textStyle="bold"
                         android:textColor="#565C3A"
                         android:visibility="gone"/>

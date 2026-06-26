@@ -174,12 +174,14 @@ public class Blood_Requests extends AppCompatActivity {
 
             TextView bloodGroup,deadline,location,hospital_name;
             ImageView pin;
+            Button seeDetails;
 
             bloodGroup = search_view.findViewById(R.id.bloodGroup);
             hospital_name = search_view.findViewById(R.id.hospital_name);
             deadline = search_view.findViewById(R.id.deadline);
             pin = search_view.findViewById(R.id.pin);
             location = search_view.findViewById(R.id.location);
+            seeDetails = search_view.findViewById(R.id.seeDetails_Btn);
 
             hashMap = arrayList.get(position);
             String id = hashMap.get("id") != null ? hashMap.get("id") : "";
@@ -193,19 +195,16 @@ public class Blood_Requests extends AppCompatActivity {
             String deadline_final = hashMap.get("deadline");
             String disease_type = hashMap.get("disease_type");
             String unit = hashMap.get("unit");
-
             bloodGroup.setText(blood_group);
             hospital_name.setText(hospitalName);
             deadline.setText(deadline_final);
             location.setText(location_final);
-
-            Button seeDetails_Btn = search_view.findViewById(R.id.seeDetails_Btn);
-
-            seeDetails_Btn.setOnClickListener(new View.OnClickListener() {
+            seeDetails.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SharedPreferences sharedPreferences = getSharedPreferences("BLOOD_REQUEST",MODE_PRIVATE);
+                    SharedPreferences sharedPreferences =getSharedPreferences("BLOOD_REQUEST",MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
+
                     editor.putString("request_name",name);
                     editor.putString("email",email);
                     editor.putString("bloodGroup",blood_group);
@@ -219,7 +218,8 @@ public class Blood_Requests extends AppCompatActivity {
 
                     editor.apply();
                     startActivity(new Intent(Blood_Requests.this, See_details.class));
-                }});
+                }
+            });
             pin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

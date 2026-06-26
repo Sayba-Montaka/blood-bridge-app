@@ -4,5 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blood_selected">#AE0303</color>
     <color name="blood_unselected">#FAC7C7</color>
-
+    <color name="tick_gray">#8696A0</color>
+    <color name="tick_blue">#34B7F1</color>
 </resources>

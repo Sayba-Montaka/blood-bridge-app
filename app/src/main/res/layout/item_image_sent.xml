@@ -20,14 +20,35 @@
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"/>
 
-        <TextView
-            android:id="@+id/timeText"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_gravity="end"
-            android:textColor="#DDDDDD"
-            android:textSize="10sp"
-            android:layout_marginTop="2dp"/>
+            >
+
+            <TextView
+                android:id="@+id/timeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:textColor="#DDDDDD"
+                android:textSize="10sp"
+                android:layout_marginTop="2dp"/>
+            <ImageView
+                android:id="@+id/ivTick1"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_marginStart="4dp"
+                android:src="@drawable/ic_tick" />
+
+            <ImageView
+                android:id="@+id/ivTick2"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_marginStart="-7dp"
+                android:src="@drawable/ic_tick" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

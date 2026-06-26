@@ -180,6 +180,7 @@ public class Chat extends AppCompatActivity {
             map.put("receiver",  receiverEmail);
             map.put("message",   message);
             map.put("timestamp", System.currentTimeMillis());
+            map.put("status",    "sent");
 
             chatRef.push().setValue(map);
             messageInput.setText("");
@@ -196,14 +197,28 @@ public class Chat extends AppCompatActivity {
                 long latestTs = 0;
 
                 for (DataSnapshot data : snapshot.getChildren()) {
+                    String key    = data.getKey();
+                    String sender = data.child("sender").getValue(String.class);
+                    String status = data.child("status").getValue(String.class);
+                    if (status == null) status = "sent"; // backward-compat for old messages
+
                     HashMap<String, String> msg = new HashMap<>();
-                    msg.put("sender",  data.child("sender").getValue(String.class));
+                    msg.put("sender",  sender);
                     msg.put("message", data.child("message").getValue(String.class));
                     msg.put("type",    data.child("type").getValue(String.class));
+                    msg.put("status",  status);
+
                     Long ts = data.child("timestamp").getValue(Long.class);
                     if (ts != null && ts > latestTs) latestTs = ts;
                     msg.put("timestamp", ts != null ? formatTime(ts) : "");
                     messageList.add(msg);
+
+                    // If this message isn't mine and hasn't been marked seen yet,
+                    // mark it now — because I'm here, in this chat, looking at it.
+                    boolean isMine = sender != null && sender.equals(senderEmail);
+                    if (!isMine && !"seen".equals(status) && key != null) {
+                        chatRef.child(key).child("status").setValue("seen");
+                    }
                 }
 
                 if (latestTs > 0) {
@@ -287,6 +302,7 @@ public class Chat extends AppCompatActivity {
             map.put("message",   base64Image);   // store image as base64
             map.put("type",      "image");        // type = image
             map.put("timestamp", System.currentTimeMillis());
+            map.put("status",    "sent");
 
             chatRef.push().setValue(map);
 
@@ -350,11 +366,12 @@ public class Chat extends AppCompatActivity {
                 TextVH vh = (TextVH) holder;
                 vh.messageText.setText(msg.get("message"));
                 vh.timeText.setText(msg.get("timestamp"));
+                bindTicks(vh.tick1, vh.tick2, msg.get("status"));
 
             } else if (holder instanceof ImageVH) {
                 ImageVH vh = (ImageVH) holder;
                 vh.timeText.setText(msg.get("timestamp"));
-
+                bindTicks(vh.tick1, vh.tick2, msg.get("status"));
                 String base64 = msg.get("message");
 
                 if(vh.download_button != null){
@@ -403,22 +420,28 @@ public class Chat extends AppCompatActivity {
         // Text message ViewHolder
         class TextVH extends RecyclerView.ViewHolder {
             TextView messageText, timeText;
+            ImageView tick1, tick2;
             TextVH(@NonNull View itemView) {
                 super(itemView);
                 messageText = itemView.findViewById(R.id.messageText);
                 timeText    = itemView.findViewById(R.id.timeText);
+                tick1 = itemView.findViewById(R.id.ivTick1);
+                tick2 = itemView.findViewById(R.id.ivTick2);
             }
         }
 
         // Image message ViewHolder
         class ImageVH extends RecyclerView.ViewHolder {
-            ImageView messageImage;
+            ImageView messageImage,tick1, tick2;
+
             TextView timeText,download_button;
             ImageVH(@NonNull View itemView) {
                 super(itemView);
                 messageImage = itemView.findViewById(R.id.messageImage);
                 timeText     = itemView.findViewById(R.id.timeText);
                 download_button     = itemView.findViewById(R.id.download_button);
+                tick1 = itemView.findViewById(R.id.ivTick1); // null on received_image layout
+                tick2 = itemView.findViewById(R.id.ivTick2);
             }
         }
     }
@@ -535,6 +558,27 @@ public class Chat extends AppCompatActivity {
             e.printStackTrace();
 
             Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void bindTicks(ImageView tick1, ImageView tick2, String status) {
+        if (tick1 == null || tick2 == null) return; // received message, no ticks
+        int gray = ContextCompat.getColor(this, R.color.tick_gray);
+        int blue = ContextCompat.getColor(this, R.color.tick_blue);
+
+        if ("seen".equals(status)) {
+            tick1.setVisibility(View.VISIBLE);
+            tick2.setVisibility(View.VISIBLE);
+            tick1.setColorFilter(blue);
+            tick2.setColorFilter(blue);
+        } else if ("delivered".equals(status)) {
+            tick1.setVisibility(View.VISIBLE);
+            tick2.setVisibility(View.VISIBLE);
+            tick1.setColorFilter(gray);
+            tick2.setColorFilter(gray);
+        } else { // "sent"
+            tick1.setVisibility(View.VISIBLE);
+            tick2.setVisibility(View.GONE);
+            tick1.setColorFilter(gray);
         }
     }
 }
