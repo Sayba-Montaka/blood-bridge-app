@@ -2,6 +2,13 @@ plugins {
     alias(libs.plugins.android.application)
     id 'com.google.gms.google-services'
 }
+import java.util.Properties
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(new FileInputStream(localPropertiesFile))
+}
 
 android {
     namespace 'com.example.bloodbankt'
@@ -11,7 +18,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.bloodbankt"
-        def MAPS_API_KEY = project.findProperty("MAPS_API_KEY") ?: ""
+        def MAPS_API_KEY = localProperties.getProperty("MAPS_API_KEY") ?: ""
         manifestPlaceholders = [
                 MAPS_API_KEY: MAPS_API_KEY
         ]

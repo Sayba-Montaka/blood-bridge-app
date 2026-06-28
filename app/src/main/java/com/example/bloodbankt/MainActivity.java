@@ -178,6 +178,9 @@ public class MainActivity extends BaseActivity {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        /*----------------notification message------------------*/
+        Intent serviceIntent = new Intent(this, MessageListenerService.class);
+        startService(serviceIntent);
         /* ---------------------------Logout nav----------------------------------*/
         if (footer_container != null) {
             // The include layout might be the last child

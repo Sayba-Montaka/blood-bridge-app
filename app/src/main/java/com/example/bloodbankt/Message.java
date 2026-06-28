@@ -2,6 +2,7 @@ package com.example.bloodbankt;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -213,15 +215,26 @@ public class Message extends BaseActivity {
                             String lastMsg  = "";
                             String lastTime = "";
                             long   latestTs = 0;
+                            String lastSender = "";
+
+                            long lastSeen = getSharedPreferences("BloodBank", MODE_PRIVATE)
+                                    .getLong("last_seen_" + roomId, 0);
+                            int unreadCount = 0;
 
                             for (DataSnapshot msgSnap : room.getChildren()) {
                                 Long ts = msgSnap.child("timestamp").getValue(Long.class);
+                                String sender = msgSnap.child("sender").getValue(String.class); // ← this line declares it
+
                                 if (ts != null && ts > latestTs) {
                                     latestTs = ts;
                                     String txt = msgSnap.child("message").getValue(String.class);
                                     lastMsg  = txt != null ? txt : "";
                                     lastTime = new SimpleDateFormat("hh:mm a", Locale.getDefault())
                                             .format(new Date(ts));
+                                    lastSender = sender != null ? sender : "";
+                                }
+                                if (ts != null && ts > lastSeen && sender != null && !sender.trim().equals(loginEmail)) {
+                                    unreadCount++;
                                 }
                             }
 
@@ -229,9 +242,10 @@ public class Message extends BaseActivity {
                             if (userInfo == null) userInfo = usersMap.get(otherEmail.replace(".", ","));
                             if (userInfo == null) continue;
 
+                            boolean isUnread = unreadCount > 0;
                             conversationList.add(new ConversationModel(
                                     userInfo.get("name"), otherEmail,
-                                    userInfo.get("image"), lastMsg, lastTime, latestTs));
+                                    userInfo.get("image"), lastMsg, lastTime, latestTs,isUnread,unreadCount));
                         }
 
                         conversationList.sort((a, b) -> Long.compare(b.timestamp, a.timestamp));
@@ -248,11 +262,16 @@ public class Message extends BaseActivity {
     public static class ConversationModel {
         public String name, email, image, lastMessage, lastTime;
         public long timestamp;
+        public boolean isUnread;
+        public int unreadCount;
         public ConversationModel(String name, String email, String image,
-                                 String lastMessage, String lastTime, long timestamp) {
+                                 String lastMessage, String lastTime, long timestamp,
+                                 boolean isUnread, int unreadCount) {
             this.name = name; this.email = email; this.image = image;
             this.lastMessage = lastMessage; this.lastTime = lastTime;
             this.timestamp = timestamp;
+            this.isUnread = isUnread;
+            this.unreadCount = unreadCount;
         }
     }
 
@@ -296,6 +315,19 @@ public class Message extends BaseActivity {
                 vh.last_message.setText(conv.lastMessage);
                 vh.last_m_time.setText(conv.lastTime);
 
+                vh.M_name.setTypeface(null, conv.isUnread ? Typeface.BOLD : Typeface.NORMAL);
+                vh.last_message.setTypeface(null, conv.isUnread ? Typeface.BOLD : Typeface.NORMAL);
+                vh.last_message.setTextColor(ContextCompat.getColor(Message.this,
+                        conv.isUnread ? R.color.black : R.color.gray)); // pick colors that fit your theme
+
+                if (vh.unreadBadge != null) {
+                    if (conv.unreadCount > 0) {
+                        vh.unreadBadge.setVisibility(View.VISIBLE);
+                        vh.unreadBadge.setText(String.valueOf(conv.unreadCount));
+                    } else {
+                        vh.unreadBadge.setVisibility(View.GONE);
+                    }
+                }
                 Glide.with(Message.this)
                         .load(conv.image)
                         .placeholder(R.drawable.theme)
@@ -331,7 +363,7 @@ public class Message extends BaseActivity {
         // ── Conversation ViewHolder ────────────────────────────────────────
         public class VH extends RecyclerView.ViewHolder {
             ShapeableImageView shapeImage;
-            TextView M_name, last_message, last_m_time;
+            TextView M_name, last_message, last_m_time,unreadBadge;
             View onlineDot;
             public VH(@NonNull View itemView) {
                 super(itemView);
@@ -340,6 +372,7 @@ public class Message extends BaseActivity {
                 last_message = itemView.findViewById(R.id.last_message);
                 last_m_time  = itemView.findViewById(R.id.last_m_time);
                 onlineDot    = itemView.findViewById(R.id.onlineDot);
+                unreadBadge  = itemView.findViewById(R.id.unreadBadge);
             }
         }
 

@@ -6,4 +6,5 @@
     <color name="blood_unselected">#FAC7C7</color>
     <color name="tick_gray">#8696A0</color>
     <color name="tick_blue">#34B7F1</color>
+    <color name="gray">#888888</color>
 </resources>

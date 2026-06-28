@@ -67,5 +67,17 @@
         android:text="10:01"
         android:textSize="11sp"
         android:textColor="#999"/>
+    <TextView
+        android:id="@+id/unreadBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/badge_circle_bg"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="8dp"
+        android:visibility="gone"
+        android:layout_gravity="end"
+        android:padding="5dp"
+        android:layout_margin="5dp"/>
 
 </LinearLayout>
