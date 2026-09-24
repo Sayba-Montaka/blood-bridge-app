@@ -27,7 +27,4 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew build         Annotations
-1 error, 2 warnings, and 1 notice
-build
-Process completed with exit code 1.
+        run: ./gradlew build
